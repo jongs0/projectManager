@@ -1,0 +1,21 @@
+package Dreamteam.GroupProject1.models.enums;
+
+public enum Role {
+    CLIENT,
+    DEVELOPER,
+    PROJECTMANAGER;
+
+    @Override
+    public String toString() {
+        switch (this) {
+            case CLIENT:
+                return "Client";
+            case DEVELOPER:
+                return "Developer";
+            case PROJECTMANAGER:
+                return "Project Manager";
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+}
