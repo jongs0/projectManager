@@ -1,9 +1,6 @@
 package Dreamteam.GroupProject1.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +13,13 @@ public class Task {
     private String name;
     private String body;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(name = "task_watchers",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<AppUser> watchingUsers = new ArrayList<>();
-    @OneToMany
+
+    @OneToMany(mappedBy = "task")
     private List<Comment> comments = new ArrayList<>();
 
     public Long getId() {
