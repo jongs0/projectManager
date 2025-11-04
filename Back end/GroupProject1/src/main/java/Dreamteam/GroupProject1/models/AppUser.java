@@ -20,8 +20,12 @@ public class AppUser {
 
     private Role role;
 
-    @ManyToMany(mappedBy = "appUser")
-    List<Team> teams = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "team_member",
+            joinColumns = @JoinColumn(name = "team_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "appUser_id",
+                    referencedColumnName = "id"))
+    private List<Team> teams = new ArrayList<>();
 
     public Long getId() {
         return id;
