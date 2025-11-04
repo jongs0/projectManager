@@ -15,6 +15,7 @@ public class Task {
     private Long id;
     private String name;
     private String body;
+
     @OneToMany
     private List<AppUser> watchingUsers = new ArrayList<>();
     @OneToMany
