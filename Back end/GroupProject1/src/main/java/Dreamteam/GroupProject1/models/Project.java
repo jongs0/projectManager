@@ -2,6 +2,8 @@ package Dreamteam.GroupProject1.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Project {
     @GeneratedValue
@@ -11,7 +13,8 @@ public class Project {
     String name;
 
     @OneToMany
-    Task task;
+    @JoinColumn(name = "taskId")
+    List<Task> task;
 
     public Long getId() {
         return id;
