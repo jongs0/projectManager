@@ -1,9 +1,6 @@
 package Dreamteam.GroupProject1.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Comment {
@@ -11,9 +8,11 @@ public class Comment {
     @Id
     private Long id;
     private String body;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private AppUser user;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "task_id")
     private Task task;
 
     public Long getId() {
