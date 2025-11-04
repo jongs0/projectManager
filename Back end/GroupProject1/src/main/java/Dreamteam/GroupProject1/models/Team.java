@@ -20,5 +20,20 @@ public class Team {
     @ManyToMany(mappedBy = "teams")
     private List<AppUser> teamMembers;
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<AppUser> getTeamMembers() {
+        return teamMembers;
+    }
 
 }
