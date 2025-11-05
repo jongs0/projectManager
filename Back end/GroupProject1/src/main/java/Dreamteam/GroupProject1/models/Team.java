@@ -18,6 +18,7 @@ public class Team {
     private List<AppUser> teamMembers;
 
     @ManyToOne
+    @JoinColumn(name = "project_id")
     private Project project;
 
     public Long getId() {

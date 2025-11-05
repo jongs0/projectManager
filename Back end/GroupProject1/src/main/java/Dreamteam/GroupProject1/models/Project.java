@@ -15,7 +15,6 @@ public class Project {
     @JoinColumn(name = "taskId")
     List<Task> tasks;
 
-    @JoinColumn(name = "teamId")
     @OneToMany(mappedBy = "project")
     List<Team> teams;
 
