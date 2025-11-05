@@ -1,9 +1,7 @@
-package Dreamteam.GroupProject1.dto;
+package Dreamteam.GroupProject1.dto.project;
 
-import Dreamteam.GroupProject1.models.AppUser;
 import Dreamteam.GroupProject1.models.Project;
 import Dreamteam.GroupProject1.models.Task;
-import Dreamteam.GroupProject1.models.enums.Role;
 
 import java.util.List;
 

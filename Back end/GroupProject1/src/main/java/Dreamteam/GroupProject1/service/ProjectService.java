@@ -1,8 +1,7 @@
 package Dreamteam.GroupProject1.service;
 
-import Dreamteam.GroupProject1.dto.ProjectCreateDTO;
-import Dreamteam.GroupProject1.dto.ProjectDTO;
-import Dreamteam.GroupProject1.models.AppUser;
+import Dreamteam.GroupProject1.dto.project.ProjectCreateDTO;
+import Dreamteam.GroupProject1.dto.project.ProjectDTO;
 import Dreamteam.GroupProject1.models.Project;
 import Dreamteam.GroupProject1.repository.ProjectRepository;
 import jakarta.persistence.EntityNotFoundException;
