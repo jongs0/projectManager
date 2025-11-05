@@ -71,5 +71,17 @@ public class AppUser {
     public List<Task> getWatchedTasks() {
         return watchedTasks;
     }
+
+    public void setWatchedTasks(List<Task> watchedTasks) {
+        this.watchedTasks = watchedTasks;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 }
 

@@ -44,4 +44,8 @@ public class Team {
     public void setProject(Project project) {
         this.project = project;
     }
+
+    public void setTeamMembers(List<AppUser> teamMembers) {
+        this.teamMembers = teamMembers;
+    }
 }

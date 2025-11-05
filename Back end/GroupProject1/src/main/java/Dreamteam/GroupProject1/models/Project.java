@@ -19,7 +19,6 @@ public class Project {
     List<Team> teams;
 
 
-
     public Project(Long id, String name, List<Task> tasks, List<Team> teams) {
         this.id = id;
         this.name = name;
@@ -45,5 +44,13 @@ public class Project {
 
     public List<Team> getTeams() {
         return teams;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
     }
 }
