@@ -21,13 +21,16 @@ public class AppUser {
     private Role role;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "team_member",
+    @JoinTable(name = "team_members",
             joinColumns = @JoinColumn(name = "app_user_id"),
             inverseJoinColumns = @JoinColumn(name = "team_id"))
     private List<Team> teams = new ArrayList<>();
 
     @ManyToMany(mappedBy = "watchingUsers")
     private List<Task> watchedTasks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -59,6 +62,14 @@ public class AppUser {
 
     public List<Team> getTeams() {
         return teams;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public List<Task> getWatchedTasks() {
+        return watchedTasks;
     }
 }
 

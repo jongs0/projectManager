@@ -22,6 +22,9 @@ public class Task {
     @OneToMany(mappedBy = "task")
     private List<Comment> comments = new ArrayList<>();
 
+    @ManyToOne
+    private Project project;
+
     public Long getId() {
         return id;
     }
