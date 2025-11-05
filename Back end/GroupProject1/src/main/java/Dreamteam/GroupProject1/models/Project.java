@@ -10,6 +10,7 @@ public class Project {
     @Id
     Long id;
     String name;
+    String description;
 
     @OneToMany
     @JoinColumn(name = "taskId")
@@ -17,14 +18,6 @@ public class Project {
 
     @OneToMany(mappedBy = "project")
     List<Team> teams;
-
-
-    public Project(Long id, String name, List<Task> tasks, List<Team> teams) {
-        this.id = id;
-        this.name = name;
-        this.tasks = tasks;
-        this.teams = teams;
-    }
 
     public Long getId() {
         return id;
@@ -52,5 +45,13 @@ public class Project {
 
     public void setTeams(List<Team> teams) {
         this.teams = teams;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
