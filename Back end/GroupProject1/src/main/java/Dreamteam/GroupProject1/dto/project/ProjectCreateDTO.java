@@ -15,6 +15,7 @@ public record ProjectCreateDTO(
         return new Project(
                 null,
                 name,
+                new ArrayList<>(),
                 new ArrayList<>()
                 );
     }

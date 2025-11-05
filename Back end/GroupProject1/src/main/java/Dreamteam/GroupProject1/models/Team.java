@@ -1,9 +1,6 @@
 package Dreamteam.GroupProject1.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +16,10 @@ public class Team {
 
     @ManyToMany(mappedBy = "teams")
     private List<AppUser> teamMembers;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     public Long getId() {
         return id;
@@ -36,4 +37,11 @@ public class Team {
         return teamMembers;
     }
 
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
 }

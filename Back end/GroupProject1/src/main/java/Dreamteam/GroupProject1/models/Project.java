@@ -9,17 +9,22 @@ public class Project {
     @GeneratedValue
     @Id
     Long id;
-
     String name;
 
     @OneToMany
     @JoinColumn(name = "taskId")
     List<Task> tasks;
 
-    public Project(Long id, String name, List<Task> tasks) {
+    @OneToMany(mappedBy = "project")
+    List<Team> teams;
+
+
+
+    public Project(Long id, String name, List<Task> tasks, List<Team> teams) {
         this.id = id;
         this.name = name;
         this.tasks = tasks;
+        this.teams = teams;
     }
 
     public Long getId() {
@@ -36,5 +41,9 @@ public class Project {
 
     public List<Task> getTasks() {
         return tasks;
+    }
+
+    public List<Team> getTeams() {
+        return teams;
     }
 }
