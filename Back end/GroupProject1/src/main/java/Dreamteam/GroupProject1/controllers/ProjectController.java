@@ -1,7 +1,7 @@
 package Dreamteam.GroupProject1.controllers;
 
-import Dreamteam.GroupProject1.dto.ProjectCreateDTO;
-import Dreamteam.GroupProject1.dto.ProjectDTO;
+import Dreamteam.GroupProject1.dto.project.ProjectCreateDTO;
+import Dreamteam.GroupProject1.dto.project.ProjectDTO;
 import Dreamteam.GroupProject1.service.ProjectService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
