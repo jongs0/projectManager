@@ -53,5 +53,15 @@ public class Task {
         return comments;
     }
 
+    public void setWatchingUsers(List<AppUser> watchingUsers) {
+        this.watchingUsers = watchingUsers;
+    }
 
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
 }
