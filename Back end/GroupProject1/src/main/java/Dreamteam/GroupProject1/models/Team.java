@@ -17,8 +17,9 @@ public class Team {
     @ManyToMany(mappedBy = "teams")
     private List<AppUser> teamMembers;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id")
+
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "project_id", nullable = true)
     private Project project;
 
     public Long getId() {
