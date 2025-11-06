@@ -16,8 +16,8 @@ public record TaskSummaryDTO(
     public static TaskSummaryDTO fromEntity(Task task) {
 
         List<AppUserSummaryDTO> watcherDtos = task.getWatchingUsers() == null
-                ? List.of()
-                : task.getWatchingUsers().stream()
+                ? List.of() : task.getWatchingUsers()
+                .stream()
                 .map(AppUserSummaryDTO::fromEntity)
                 .toList();
 
