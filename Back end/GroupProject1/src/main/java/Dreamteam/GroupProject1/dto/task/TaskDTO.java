@@ -12,7 +12,8 @@ public record TaskDTO(
         String name,
         String body,
         List<CommentSummaryDTO> comments,
-        List<AppUserSummaryDTO> watchers
+        List<AppUserSummaryDTO> watchers,
+        boolean done
 
 ) {
     public static TaskDTO fromEntity(Task task) {
@@ -32,7 +33,8 @@ public record TaskDTO(
                 task.getName(),
                 task.getDescription(),
                 commentDtos,
-                watcherDtos
+                watcherDtos,
+                task.isDone()
         );
     }
 }
