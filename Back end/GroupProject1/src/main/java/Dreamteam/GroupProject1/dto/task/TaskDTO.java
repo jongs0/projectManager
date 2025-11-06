@@ -22,7 +22,7 @@ public record TaskDTO(
                 .map(CommentSummaryDTO::fromEntity)
                 .toList();
 
-        List<AppUserSummaryDTO> watcherDtos = task.getUsers()
+        List<AppUserSummaryDTO> watcherDtos = task.getWatchingUsers()
                 .stream()
                 .map(AppUserSummaryDTO::fromEntity)
                 .toList();
@@ -30,7 +30,7 @@ public record TaskDTO(
         return new TaskDTO(
                 task.getId(),
                 task.getName(),
-                task.getBody(),
+                task.getDescription(),
                 commentDtos,
                 watcherDtos
         );

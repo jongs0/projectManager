@@ -5,12 +5,12 @@ import Dreamteam.GroupProject1.models.Task;
 public record TaskUpdateDTO(
 
         String name,
-        String body
+        String description
 
 ) {
     public void updateTask(Task task) {
 
         if (name != null) task.setName(name);
-        if (body != null) task.setBody(body);
+        if (description != null) task.setDescription(description);
     }
 }

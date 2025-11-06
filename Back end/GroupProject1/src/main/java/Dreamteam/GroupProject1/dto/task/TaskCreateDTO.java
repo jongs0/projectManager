@@ -13,14 +13,14 @@ public record TaskCreateDTO(
         String name,
 
         @Size(max = 2200)
-        String body
+        String description
 
 ) {
     public Task toEntity() {
 
         Task task = new Task();
         task.setName(this.name);
-        task.setBody(this.body);
+        task.setDescription(this.description);
         return task;
     }
 }

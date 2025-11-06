@@ -9,22 +9,24 @@ public record TaskSummaryDTO(
         Long id,
         String name,
         String body,
-        List<AppUserSummaryDTO> watchers
+        List<AppUserSummaryDTO> watchers,
+        boolean done
 ) {
 
     public static TaskSummaryDTO fromEntity(Task task) {
 
-        List<AppUserSummaryDTO> watcherDtos = task.getUsers() == null
+        List<AppUserSummaryDTO> watcherDtos = task.getWatchingUsers() == null
                 ? List.of()
-                : task.getUsers().stream()
+                : task.getWatchingUsers().stream()
                 .map(AppUserSummaryDTO::fromEntity)
                 .toList();
 
         return new TaskSummaryDTO(
                 task.getId(),
                 task.getName(),
-                task.getBody(),
-                watcherDtos
+                task.getDescription(),
+                watcherDtos,
+                task.isDone()
 
         );
     }
