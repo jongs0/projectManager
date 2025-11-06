@@ -1,15 +1,14 @@
 package Dreamteam.GroupProject1.dto.comment;
 
 import Dreamteam.GroupProject1.models.Comment;
-import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Size;
 
 public record CommentUpdateDTO(
-        Long id,
-        @Max(2200)
+        @Size(max = 2200)
         String body
 ) {
     public void updateComment(Comment comment) {
-        comment.setBody(this.body);
+        if (body != null) comment.setBody(body);
     }
 }
 

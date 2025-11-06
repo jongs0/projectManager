@@ -1,16 +1,17 @@
 package Dreamteam.GroupProject1.dto.comment;
 
-import Dreamteam.GroupProject1.models.AppUser;
 import Dreamteam.GroupProject1.models.Comment;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public record CommentCreateDTO(
 
-        Long commentId,
-        Long appUserId,
+        @NotNull(message = "Task id is required.")
         Long taskId,
-        @Max(2200)
+
+        @NotBlank(message = "Body is required")
+        @Size(max = 2200)
         String body
 ) {
 

@@ -1,13 +1,14 @@
 package Dreamteam.GroupProject1.dto.comment;
 
 import Dreamteam.GroupProject1.dto.appuser.AppUserSummaryDTO;
-import Dreamteam.GroupProject1.models.AppUser;
+import Dreamteam.GroupProject1.dto.task.TaskSummaryDTO;
 import Dreamteam.GroupProject1.models.Comment;
 
 public record CommentDTO(
         Long id,
         String body,
-        AppUserSummaryDTO appUser
+        AppUserSummaryDTO appUser,
+        TaskSummaryDTO task
 ) {
     public static CommentDTO fromEntity(Comment comment) {
 
@@ -15,9 +16,10 @@ public record CommentDTO(
 
 
         return new CommentDTO(
-        comment.getId(),
-        comment.getBody(),
-        appUserDto
+                comment.getId(),
+                comment.getBody(),
+                AppUserSummaryDTO.fromEntity(comment.getUser()),
+                TaskSummaryDTO.fromEntity(comment.getTask())
         );
     }
 }
