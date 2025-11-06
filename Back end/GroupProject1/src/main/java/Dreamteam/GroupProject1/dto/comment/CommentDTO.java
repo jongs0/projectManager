@@ -12,9 +12,6 @@ public record CommentDTO(
 ) {
     public static CommentDTO fromEntity(Comment comment) {
 
-        AppUserSummaryDTO appUserDto = AppUserSummaryDTO.fromEntity(comment.getUser());
-
-
         return new CommentDTO(
                 comment.getId(),
                 comment.getBody(),
