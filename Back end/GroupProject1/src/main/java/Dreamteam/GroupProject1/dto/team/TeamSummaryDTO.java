@@ -1,18 +1,15 @@
 package Dreamteam.GroupProject1.dto.team;
 
 import Dreamteam.GroupProject1.models.Team;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 public record TeamSummaryDTO(
-
-        @NotBlank(message = "Team name is required.")
-        @Size(max = 255)
+        Long id,
         String name
 ) {
-    public void updateTeam(Team team) {
-        if (name != null) {
-            team.setName(name);
-        }
+    public static TeamSummaryDTO fromEntity(Team team) {
+        return new TeamSummaryDTO(
+                team.getId(),
+                team.getName()
+        );
     }
 }
