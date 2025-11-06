@@ -1,23 +1,25 @@
 package Dreamteam.GroupProject1.dto.appuser;
 
 import Dreamteam.GroupProject1.models.AppUser;
-import Dreamteam.GroupProject1.models.Team;
 import Dreamteam.GroupProject1.models.enums.Role;
 import jakarta.validation.constraints.Email;
-
-import java.util.List;
+import jakarta.validation.constraints.Size;
 
 public record AppUserUpdateDTO(
 
-        @Email
         String email,
+
+        @Size(min = 8, message = "Password must be at least 8 characters long.")
         String password,
         Role role
 ) {
-    public void updateAppUser (AppUser appUser){
+    public void updateAppUser(AppUser appUser) {
 
-        appUser.setEmail(this.email);
-        appUser.setPassword(this.password);
-        appUser.setRole(this.role);
+        if (email != null) {
+            appUser.setEmail(email);
+        }
+        if (password != null) {
+            appUser.setPassword(password);
+        }
     }
 }

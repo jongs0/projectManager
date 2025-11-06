@@ -12,24 +12,27 @@ public record AppUserDTO(
         Long id,
         String email,
         Role role,
-        List<TeamSummaryDTO> teamDto,
-        List<TaskSummaryDTO> taskDto,
-        List<CommentSummaryDTO> commentDto
+        List<TeamSummaryDTO> teamDtos,
+        List<TaskSummaryDTO> taskDtos,
+        List<CommentSummaryDTO> commentDtos
 ) {
     public static AppUserDTO fromEntity(AppUser appUser) {
 
-        List<TeamSummaryDTO> teamDtos = appUser.getTeams()
-                .stream()
+        List<TeamSummaryDTO> teamDtos = appUser.getTeams() == null
+                ? List.of()
+                : appUser.getTeams().stream()
                 .map(TeamSummaryDTO::fromEntity)
                 .toList();
 
-        List<TaskSummaryDTO> taskDtos = appUser.getWatchedTasks()
-                .stream()
+        List<TaskSummaryDTO> taskDtos = appUser.getWatchedTasks() == null
+                ? List.of()
+                : appUser.getWatchedTasks().stream()
                 .map(TaskSummaryDTO::fromEntity)
                 .toList();
 
-        List<CommentSummaryDTO> commentDtos = appUser.getComments()
-                .stream()
+        List<CommentSummaryDTO> commentDtos = appUser.getComments() == null
+                ? List.of()
+                : appUser.getComments().stream()
                 .map(CommentSummaryDTO::fromEntity)
                 .toList();
 

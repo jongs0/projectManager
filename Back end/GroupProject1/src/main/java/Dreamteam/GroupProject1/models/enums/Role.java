@@ -3,7 +3,8 @@ package Dreamteam.GroupProject1.models.enums;
 public enum Role {
     CLIENT,
     DEVELOPER,
-    PROJECTMANAGER;
+    PROJECTMANAGER,
+    USER;
 
     @Override
     public String toString() {
@@ -14,6 +15,9 @@ public enum Role {
                 return "Developer";
             case PROJECTMANAGER:
                 return "Project Manager";
+            case USER:
+                return "User";
+
             default:
                 throw new IllegalArgumentException();
         }
