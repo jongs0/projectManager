@@ -1,12 +1,14 @@
 package Dreamteam.GroupProject1.dto.appuser;
 
 import Dreamteam.GroupProject1.models.AppUser;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record AppUserCreateDTO(
 
+        @Column(unique=true)
         @NotBlank(message = "Email is required.")
         @Email String email,
 
