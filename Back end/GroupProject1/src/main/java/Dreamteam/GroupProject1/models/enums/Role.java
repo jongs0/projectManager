@@ -3,7 +3,8 @@ package Dreamteam.GroupProject1.models.enums;
 public enum Role {
     CLIENT,
     DEVELOPER,
-    PROJECTMANAGER;
+    PROJECTMANAGER,
+    USER;
 
     @Override
     public String toString() {

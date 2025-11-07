@@ -2,10 +2,9 @@ package Dreamteam.GroupProject1.dto.appuser;
 
 import Dreamteam.GroupProject1.models.AppUser;
 import Dreamteam.GroupProject1.models.enums.Role;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 
-public record AppUserUpdateDTO(
+public record AdminAppUserUpdateDTO(
 
         String email,
 
@@ -21,5 +20,10 @@ public record AppUserUpdateDTO(
         if (password != null) {
             appUser.setPassword(password);
         }
+        if (role != null) {
+                appUser.setRole(role);
+        }
     }
 }
+
+

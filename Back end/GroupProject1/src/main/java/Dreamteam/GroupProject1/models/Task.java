@@ -11,7 +11,8 @@ public class Task {
     @Id
     private Long id;
     private String name;
-    private String body;
+    private String description;
+    private boolean done;
 
     @ManyToMany
     @JoinTable(name = "task_watchers",
@@ -37,15 +38,15 @@ public class Task {
         this.name = name;
     }
 
-    public String getBody() {
-        return body;
+    public String getDescription() {
+        return description;
     }
 
-    public void setBody(String body) {
-        this.body = body;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public List<AppUser> getUsers() {
+    public List<AppUser> getWatchingUsers() {
         return watchingUsers;
     }
 
@@ -63,5 +64,13 @@ public class Task {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 }
