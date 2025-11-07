@@ -15,9 +15,6 @@ public enum Role {
                 return "Developer";
             case PROJECTMANAGER:
                 return "Project Manager";
-            case USER:
-                return "User";
-
             default:
                 throw new IllegalArgumentException();
         }
