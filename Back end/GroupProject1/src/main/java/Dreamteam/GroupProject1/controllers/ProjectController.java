@@ -49,7 +49,7 @@ public class ProjectController {
         AppUser appUser = appUserService.getUserById(userId);
 
         if (!appUser.hasRole(Role.PROJECTMANAGER))
-            throw new UnauthorizedException("Only Project Managers can create projects");
+            throw new UnauthorizedException("Only Project Managers can update projects");
 
         ProjectDTO updatedProject = projectService.updateProject(projectId, updateDto);
         return ResponseEntity.ok(updatedProject);
