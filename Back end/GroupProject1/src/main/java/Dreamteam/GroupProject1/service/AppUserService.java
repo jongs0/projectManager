@@ -38,6 +38,11 @@ public class AppUserService {
         return AppUserDTO.fromEntity(appUser);
     }
 
+    public AppUser getUserById(Long id) {
+        return appUserRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
+    }
+
 }
 
 
