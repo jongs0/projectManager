@@ -18,6 +18,7 @@ public class AppUser {
 
     private String password;
 
+    @Enumerated
     private Role role;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -82,6 +83,10 @@ public class AppUser {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public boolean hasRole(Role role) {
+        return this.role == role;
     }
 }
 
