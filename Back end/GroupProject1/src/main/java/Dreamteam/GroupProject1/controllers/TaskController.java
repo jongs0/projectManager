@@ -1,10 +1,76 @@
-package Dreamteam.GroupProject1.controllers;
+package Dreamteam.GroupTask1.controllers;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RestController;
+import Dreamteam.GroupProject1.dto.task.*;
+import Dreamteam.GroupProject1.dto.task.TaskCreateDTO;
+import Dreamteam.GroupProject1.dto.task.TaskDTO;
+import Dreamteam.GroupProject1.service.TaskService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-//@RequestMapping("/pathhier") TBD!!
+@RequestMapping("tasks")
 public class TaskController {
+    final private TaskService taskService;
+
+    @Autowired
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
+
+//    @PostConstruct
+//    public void createDummyData() {
+//        taskService.createTask(new TaskCreateDTO("Task A", 30));
+//        taskService.createTask(new TaskCreateDTO("Task B", 30));
+//        taskService.createTask(new TaskCreateDTO("Task C", 30));
+//        taskService.createTask(new TaskCreateDTO("Task D", 30));
+//    }
+
+    @PostMapping
+    public ResponseEntity<TaskDTO> createTask(@Valid @RequestBody TaskCreateDTO createDto) {
+        TaskDTO created = taskService.createTask(createDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskDTO> getTask(@PathVariable Long id) {
+        TaskDTO task = taskService.findById(id);
+        return ResponseEntity.ok(task);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<TaskDTO> updateTask(
+            @PathVariable Long id,
+            @Valid @RequestBody TaskUpdateDTO updateDto) {
+        TaskDTO updated = taskService.updateTask(id, updateDto);
+        return ResponseEntity.ok(updated);
+    }
+
+    @PostMapping("/{taskId}/watchingUsers/{userId}")
+    public ResponseEntity<TaskDTO> addWatchingUser(
+            @PathVariable Long taskId,
+            @PathVariable Long userId) {
+        TaskDTO updated = taskService.addWatchingUser(taskId, userId);
+        return ResponseEntity.ok(updated);
+    }
+
+    @DeleteMapping("/{taskId}/watchingUsers/{userId}")
+    public ResponseEntity<TaskDTO> removeWatchingUser(
+            @PathVariable Long taskId,
+            @PathVariable Long userId) {
+        TaskDTO updated = taskService.removeWatchingUser(taskId, userId);
+        return ResponseEntity.ok(updated);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<TaskDTO> deleteTask(@PathVariable Long id) {
+        TaskDTO task = taskService.findById(id);
+        taskService.deleteTask(id);
+        return ResponseEntity.ok(task);
+    }
 }

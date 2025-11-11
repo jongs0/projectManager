@@ -1,6 +1,7 @@
 package Dreamteam.GroupProject1.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,5 +74,13 @@ public class Task {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public void addWatchingUser(AppUser user) {
+        watchingUsers.add(user);
+    }
+
+    public void removeWatchingUser(AppUser user) {
+        watchingUsers.remove(user);
     }
 }
