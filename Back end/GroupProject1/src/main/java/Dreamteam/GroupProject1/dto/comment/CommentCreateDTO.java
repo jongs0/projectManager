@@ -10,6 +10,9 @@ public record CommentCreateDTO(
         @NotNull(message = "Task id is required.")
         Long taskId,
 
+        @NotNull(message = "User id is required.")
+        Long userId,
+
         @NotBlank(message = "Body is required")
         @Size(max = 2200)
         String body
