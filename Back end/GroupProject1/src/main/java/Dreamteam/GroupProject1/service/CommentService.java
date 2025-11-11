@@ -33,31 +33,26 @@ public class CommentService {
         AppUser user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("There's no user with ID " + userId));
         comment.setUser(user);
-        user.getComments().add(comment);
 
         Long taskId = createDTO.taskId();
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new EntityNotFoundException("There's no post with ID " + taskId));
         comment.setTask(task);
-        task.getComments().add(comment);
 
         Comment savedComment = commentRepository.save(comment);
         return CommentDTO.fromEntity(savedComment);
     }
 
     public void deleteComment(Long id) {
-        Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("No comment found with id " + id));
-
-        AppUser user = comment.getUser();
-        if (user != null) {
-            user.getComments().remove(comment);
-        }
-
-        Task post = comment.getTask();
-        if (post != null) {
-            post.getComments().remove(comment);
-        }
-        commentRepository.delete(comment);
+        commentRepository.deleteById(id);
+//        AppUser user = comment.getUser();
+//        if (user != null) {
+//            user.getComments().remove(comment);
+//        }
+//
+//        Task post = comment.getTask();
+//        if (post != null) {
+//            post.getComments().remove(comment);
+//        }
     }
 }
