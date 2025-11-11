@@ -20,10 +20,11 @@ public class Task {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<AppUser> watchingUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne
+    @JoinColumn(name = "project_id")
     private Project project;
 
     public Long getId() {
