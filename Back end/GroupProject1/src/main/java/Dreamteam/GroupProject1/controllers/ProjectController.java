@@ -1,7 +1,12 @@
 package Dreamteam.GroupProject1.controllers;
 
+import Dreamteam.GroupProject1.controllers.Exceptions.UnauthorizedException;
 import Dreamteam.GroupProject1.dto.project.ProjectCreateDTO;
 import Dreamteam.GroupProject1.dto.project.ProjectDTO;
+import Dreamteam.GroupProject1.dto.project.ProjectUpdateDTO;
+import Dreamteam.GroupProject1.models.AppUser;
+import Dreamteam.GroupProject1.models.enums.Role;
+import Dreamteam.GroupProject1.service.AppUserService;
 import Dreamteam.GroupProject1.service.ProjectService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,33 +21,39 @@ import java.util.List;
 @RequestMapping("/projects")
 public class ProjectController {
     final private ProjectService projectService;
+    final private AppUserService appUserService;
 
     @Autowired
-    public ProjectController(ProjectService projectService) {
+    public ProjectController(ProjectService projectService, AppUserService appUserService) {
         this.projectService = projectService;
+        this.appUserService = appUserService;
     }
 
-//    @PostConstruct
-//    public void createDummyData() {
-//        projectService.createProject(new ProjectCreateDTO("Project A", 30));
-//        projectService.createProject(new ProjectCreateDTO("Project B", 30));
-//        projectService.createProject(new ProjectCreateDTO("Project C", 30));
-//        projectService.createProject(new ProjectCreateDTO("Project D", 30));
-//    }
 
     @PostMapping
-    public ResponseEntity<ProjectDTO> createProject(@Valid @RequestBody ProjectCreateDTO createDto) {
+
+    public ResponseEntity<ProjectDTO> createProject(@Valid @RequestBody ProjectCreateDTO createDto, @RequestParam Long userId) {
+
+        AppUser appUser = appUserService.getUserById(userId);
+
+        if (!appUser.hasRole(Role.PROJECTMANAGER))
+            throw new UnauthorizedException("Only Project Managers can create projects");
+
         ProjectDTO created = projectService.createProject(createDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<ProjectDTO> updateProject(
-//            @PathVariable Long id,
-//            @Valid @RequestBody ProjectUpdateDTO updateDto) {
-//        ProjectDTO updated = projectService.updateProject(id, updateDto);
-//        return ResponseEntity.ok(updated);
-//    }
+    @PutMapping("/{id}/update")
+    public ResponseEntity<ProjectDTO> updateProject(@PathVariable Long projectId, @RequestParam Long userId, @RequestBody ProjectUpdateDTO updateDto) {
+
+        AppUser appUser = appUserService.getUserById(userId);
+
+        if (!appUser.hasRole(Role.PROJECTMANAGER))
+            throw new UnauthorizedException("Only Project Managers can create projects");
+
+        ProjectDTO updatedProject = projectService.updateProject(projectId, updateDto);
+        return ResponseEntity.ok(updatedProject);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProjectDTO> getProject(@PathVariable Long id) {
@@ -52,14 +63,20 @@ public class ProjectController {
 
     @GetMapping
     public ResponseEntity<List<ProjectDTO>> getAllProjects() {
-        List<ProjectDTO> projectDTOs = projectService.findAll();
-        return ResponseEntity.ok(projectDTOs);
+        List<ProjectDTO> projects = projectService.findAll();
+        return ResponseEntity.ok(projects);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ProjectDTO> deleteProject(@PathVariable Long id) {
-        ProjectDTO project = projectService.findById(id);
-        projectService.deleteProject(id);
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<ProjectDTO> deleteProject(@PathVariable Long projectId, @RequestParam Long userId) {
+
+        AppUser appUser = appUserService.getUserById(userId);
+
+        if (!appUser.hasRole(Role.PROJECTMANAGER))
+            throw new UnauthorizedException("Only Project Managers can create projects");
+
+        ProjectDTO project = projectService.findById(projectId);
+        projectService.deleteProject(projectId);
         return ResponseEntity.ok(project);
     }
 }

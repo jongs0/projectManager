@@ -2,7 +2,10 @@ package Dreamteam.GroupProject1.service;
 
 import Dreamteam.GroupProject1.dto.project.ProjectCreateDTO;
 import Dreamteam.GroupProject1.dto.project.ProjectDTO;
+import Dreamteam.GroupProject1.dto.project.ProjectUpdateDTO;
+import Dreamteam.GroupProject1.models.AppUser;
 import Dreamteam.GroupProject1.models.Project;
+import Dreamteam.GroupProject1.repository.AppUserRepository;
 import Dreamteam.GroupProject1.repository.ProjectRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +29,9 @@ public class ProjectService {
     }
 
     public ProjectDTO findById(Long id) {
-        Project Project = projectRepository.findById(id)
+        Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Project not found with ID: " + id));
-        return ProjectDTO.fromEntity(Project);
+        return ProjectDTO.fromEntity(project);
     }
 
     public List<ProjectDTO> findAll() {
@@ -38,7 +41,21 @@ public class ProjectService {
                 .toList();
     }
 
-    public void deleteProject(Long id) {
-        projectRepository.deleteById(id);
+    public ProjectDTO updateProject(Long id, ProjectUpdateDTO updateDTO) {
+
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found with ID: " + id));
+
+        updateDTO.updateProject(project);
+        Project savedProject = projectRepository.save(project);
+        return ProjectDTO.fromEntity(savedProject);
+    }
+
+    public ProjectDTO deleteProject (Long id) {
+        Project projectToBeDeleted = projectRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found with ID: " + id));
+
+        projectRepository.delete(projectToBeDeleted);
+        return ProjectDTO.fromEntity(projectToBeDeleted);
     }
 }
