@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/projects")
+@RequestMapping("/myProjects")
 public class ProjectController {
     final private ProjectService projectService;
     final private AppUserService appUserService;
@@ -54,8 +54,8 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectDTO>> getMyProjects(@PathVariable Long id) {
-        List<ProjectDTO> myProjects = projectService.getMyProjects(id);
+    public ResponseEntity<List<ProjectDTO>> getMyProjects(@RequestParam Long userId) {
+        List<ProjectDTO> myProjects = projectService.getMyProjects(userId);
         return ResponseEntity.ok(myProjects);
     }
 
