@@ -5,7 +5,7 @@ interface User {
     id: number
 }
 
-export const [useUser, updateUser] = createStore<User>({
+export const [currentUser, updateUser] = createStore<User>({
     username: "",
     id: NaN,
 });

@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@odemian/react-store": "^0.0.12",
-    "@tanstack/react-query": "^5.90.5",
+    "@tanstack/react-query": "^5.90.7",
     "bootstrap": "^5.3.8",
     "odemian": "file:../../../../../../react-store",
     "react": "^19.2.0",
