@@ -20,7 +20,7 @@ public record AppUserCreateDTO(
         String password,
 
         @Enumerated
-        Role role;
+        Role role
 
 ) {
     public AppUser toEntity() {
