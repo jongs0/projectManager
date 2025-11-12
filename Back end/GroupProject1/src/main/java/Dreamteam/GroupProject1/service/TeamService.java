@@ -31,7 +31,7 @@ public class TeamService {
 
     public TeamDTO createTeam(TeamCreateDTO createDTO) {
         Project project = projectRepository.findById(createDTO.projectId())
-                .orElseThrow(() -> new EntityNotFoundException("Project not found with OD: " + createDTO.projectId()));
+                .orElseThrow(() -> new EntityNotFoundException("Project not found with ID: " + createDTO.projectId()));
 
         Team team = createDTO.toEntity(project);
         Team savedTeam = teamRepository.save(team);
@@ -54,7 +54,7 @@ public class TeamService {
         return TeamDTO.fromEntity(savedTeam);
     }
 
-    public TeamDTO addMembers(Long teamId, Long userId) {
+    public TeamDTO addMember(Long teamId, Long userId) {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new EntityNotFoundException("Team not found with ID: " + teamId));
 
@@ -66,7 +66,7 @@ public class TeamService {
         return TeamDTO.fromEntity(savedTeam);
     }
 
-    public TeamDTO removeMembers(Long teamId, Long userId) {
+    public TeamDTO removeMember(Long teamId, Long userId) {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new EntityNotFoundException("Team not found with ID: " + teamId));
 
