@@ -25,9 +25,11 @@ public class TaskController {
     final private AppUserService userService;
 
     @Autowired
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, AppUserService userService) {
         this.taskService = taskService;
+        this.userService = userService;
     }
+
 
 //    @PostConstruct
 //    public void createDummyData() {
@@ -43,7 +45,7 @@ public class TaskController {
         AppUser appUser = userService.getUserById(userId);
 
         if (appUser.hasRole(Role.CLIENT))
-            throw new UnauthorizedException("Only Project Managers and Developers can create comments.");
+            throw new UnauthorizedException("Only Project Managers and Developers can create tasks.");
 
         TaskDTO created = taskService.createTask(createDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
@@ -64,7 +66,7 @@ public class TaskController {
         AppUser appUser = userService.getUserById(userId);
 
         if (appUser.hasRole(Role.CLIENT))
-            throw new UnauthorizedException("Only Project Managers and Developers can create comments.");
+            throw new UnauthorizedException("Only Project Managers and Developers can update tasks.");
 
         TaskDTO updated = taskService.updateTask(id, updateDto);
         return ResponseEntity.ok(updated);
@@ -78,7 +80,7 @@ public class TaskController {
         AppUser appUser = userService.getUserById(userId);
 
         if (appUser.hasRole(Role.CLIENT))
-            throw new UnauthorizedException("Only Project Managers and Developers can create comments.");
+            throw new UnauthorizedException("Only Project Managers and Developers can add watching users.");
 
         TaskDTO updated = taskService.addWatchingUser(taskId, userId);
         return ResponseEntity.ok(updated);
@@ -92,7 +94,7 @@ public class TaskController {
         AppUser appUser = userService.getUserById(userId);
 
         if (appUser.hasRole(Role.CLIENT))
-            throw new UnauthorizedException("Only Project Managers and Developers can create comments.");
+            throw new UnauthorizedException("Only Project Managers and Developers can remove watching users.");
 
         TaskDTO updated = taskService.removeWatchingUser(taskId, userId);
         return ResponseEntity.ok(updated);
@@ -105,7 +107,7 @@ public class TaskController {
         AppUser appUser = userService.getUserById(userId);
 
         if (appUser.hasRole(Role.CLIENT))
-            throw new UnauthorizedException("Only Project Managers and Developers can create comments.");
+            throw new UnauthorizedException("Only Project Managers and Developers can delete tasks.");
 
         TaskDTO task = taskService.findById(id);
         taskService.deleteTask(id);
