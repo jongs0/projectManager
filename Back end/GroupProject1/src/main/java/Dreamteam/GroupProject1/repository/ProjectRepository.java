@@ -13,8 +13,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     @Query("""
     SELECT p
     FROM Project p
-    JOIN p.team t
-    JOIN t.members m
+    JOIN p.teams t
+    JOIN t.teamMembers m
     WHERE m.id = :userId
 """)
     List<Project> findAllByUserId(Long userId);
