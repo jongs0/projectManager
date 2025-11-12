@@ -29,7 +29,7 @@ public class ProjectController {
         this.appUserService = appUserService;
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<ProjectDTO> createProject(@Valid @RequestBody ProjectCreateDTO createDto, @RequestParam Long userId) {
 
         AppUser appUser = appUserService.getUserById(userId);
@@ -41,7 +41,7 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @PutMapping("/{id}/update")
+    @PutMapping("/{id}")
     public ResponseEntity<ProjectDTO> updateProject(@PathVariable Long projectId, @RequestParam Long userId, @RequestBody ProjectUpdateDTO updateDto) {
 
         AppUser appUser = appUserService.getUserById(userId);
@@ -71,7 +71,7 @@ public class ProjectController {
         return ResponseEntity.ok(projects);
     }
 
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ProjectDTO> deleteProject(@PathVariable Long projectId, @RequestParam Long userId) {
 
         AppUser appUser = appUserService.getUserById(userId);
