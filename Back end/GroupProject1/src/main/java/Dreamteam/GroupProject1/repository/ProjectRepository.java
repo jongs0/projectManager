@@ -12,7 +12,7 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     @Query("""
     SELECT p
-    FROM project p
+    FROM Project p
     JOIN p.team t
     JOIN t.members m
     WHERE m.id = :userId
