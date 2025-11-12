@@ -1,5 +1,6 @@
 package Dreamteam.GroupProject1.service;
 
+import Dreamteam.GroupProject1.dto.appuser.AppUserSummaryDTO;
 import Dreamteam.GroupProject1.dto.project.ProjectCreateDTO;
 import Dreamteam.GroupProject1.dto.project.ProjectDTO;
 import Dreamteam.GroupProject1.dto.project.ProjectUpdateDTO;
@@ -32,6 +33,13 @@ public class ProjectService {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Project not found with ID: " + id));
         return ProjectDTO.fromEntity(project);
+    }
+
+    public List<ProjectDTO> getMyProjects(Long userId) {
+        return projectRepository.findAllByUserId(userId)
+                .stream()
+                .map(ProjectDTO::fromEntity)
+                .toList();
     }
 
     public List<ProjectDTO> findAll() {

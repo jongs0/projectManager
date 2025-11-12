@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/projects")
+@RequestMapping("/myProjects")
 public class ProjectController {
     final private ProjectService projectService;
     final private AppUserService appUserService;
@@ -29,9 +29,7 @@ public class ProjectController {
         this.appUserService = appUserService;
     }
 
-
-    @PostMapping
-
+    @PostMapping("/create")
     public ResponseEntity<ProjectDTO> createProject(@Valid @RequestBody ProjectCreateDTO createDto, @RequestParam Long userId) {
 
         AppUser appUser = appUserService.getUserById(userId);
@@ -53,6 +51,12 @@ public class ProjectController {
 
         ProjectDTO updatedProject = projectService.updateProject(projectId, updateDto);
         return ResponseEntity.ok(updatedProject);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProjectDTO>> getMyProjects(@RequestParam Long userId) {
+        List<ProjectDTO> myProjects = projectService.getMyProjects(userId);
+        return ResponseEntity.ok(myProjects);
     }
 
     @GetMapping("/{id}")
