@@ -1,5 +1,6 @@
 package Dreamteam.GroupProject1.dto.team;
 
+import Dreamteam.GroupProject1.models.Project;
 import Dreamteam.GroupProject1.models.Team;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,9 +15,10 @@ public record TeamCreateDTO(
 
 ) {
 
-    public Team toEntity() {
+    public Team toEntity(Project project) {
         Team team = new Team();
         team.setName(this.name);
+        team.setProject(project);
         return team;
     }
 }

@@ -2,7 +2,6 @@ package Dreamteam.GroupProject1.models;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -46,7 +45,12 @@ public class Team {
         this.project = project;
     }
 
-    public void setTeamMembers(List<AppUser> teamMembers) {
-        this.teamMembers = teamMembers;
+    public void addTeamMember(AppUser appUser) {
+
+        teamMembers.add(appUser);
+    }
+
+    public void removeTeamMember(AppUser appUser) {
+        teamMembers.remove(appUser);
     }
 }
