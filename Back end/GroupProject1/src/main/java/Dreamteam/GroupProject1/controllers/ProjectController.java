@@ -29,9 +29,7 @@ public class ProjectController {
         this.appUserService = appUserService;
     }
 
-
-    @PostMapping
-
+    @PostMapping("/create")
     public ResponseEntity<ProjectDTO> createProject(@Valid @RequestBody ProjectCreateDTO createDto, @RequestParam Long userId) {
 
         AppUser appUser = appUserService.getUserById(userId);
@@ -53,6 +51,12 @@ public class ProjectController {
 
         ProjectDTO updatedProject = projectService.updateProject(projectId, updateDto);
         return ResponseEntity.ok(updatedProject);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProjectDTO>> getMyProjects(@PathVariable Long id) {
+        List<ProjectDTO> myProjects = projectService.getMyProjects(id);
+        return ResponseEntity.ok(myProjects);
     }
 
     @GetMapping("/{id}")
