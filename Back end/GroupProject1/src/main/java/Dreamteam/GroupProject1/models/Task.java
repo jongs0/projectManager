@@ -1,6 +1,7 @@
 package Dreamteam.GroupProject1.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +21,11 @@ public class Task {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<AppUser> watchingUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne
+    @JoinColumn(name = "project_id")
     private Project project;
 
     public Long getId() {
@@ -72,5 +74,13 @@ public class Task {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public void addWatchingUser(AppUser user) {
+        watchingUsers.add(user);
+    }
+
+    public void removeWatchingUser(AppUser user) {
+        watchingUsers.remove(user);
     }
 }
