@@ -29,7 +29,7 @@ public class TeamController {
         this.appUserService = appUserService;
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<TeamDTO> createTeam(@Valid @RequestBody TeamCreateDTO createDTO,
                                               @RequestParam Long userId) {
 
