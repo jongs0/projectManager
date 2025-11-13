@@ -1,6 +1,7 @@
 package Dreamteam.GroupProject1.service;
 
 
+import Dreamteam.GroupProject1.dto.project.ProjectDTO;
 import Dreamteam.GroupProject1.dto.team.TeamCreateDTO;
 import Dreamteam.GroupProject1.dto.team.TeamDTO;
 import Dreamteam.GroupProject1.dto.team.TeamUpdateDTO;
@@ -14,6 +15,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -78,4 +81,11 @@ public class TeamService {
         return TeamDTO.fromEntity(savedTeam);
     }
 
+    public TeamDTO deleteTeam (Long id) {
+        Team teamToBeDeleted = teamRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Team not found with ID: " + id));
+
+        teamRepository.delete(teamToBeDeleted);
+        return TeamDTO.fromEntity(teamToBeDeleted);
+    }
 }
