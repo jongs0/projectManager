@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("users")
@@ -35,9 +37,13 @@ public class UserController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<AppUserDTO> logUserIn(AppUserLoginDTO appUserLoginDTO) {
+    public ResponseEntity<Optional<AppUserDTO>> logUserIn(@Valid @RequestBody AppUserLoginDTO appUserLoginDTO) {
 
-        AppUserDTO loggedInUser = userService.logUserIn(appUserLoginDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(loggedInUser);
+        try {
+            AppUserDTO loggedInUser = userService.logUserIn(appUserLoginDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(Optional.of(loggedInUser));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Optional.empty());
+        }
     }
 }
