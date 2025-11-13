@@ -2,6 +2,7 @@ package Dreamteam.GroupProject1.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,10 +14,10 @@ public class Project {
     String description;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
 
     @OneToMany(mappedBy = "project")
-    List<Team> teams;
+    List<Team> teams = new ArrayList<>();
 
     public Long getId() {
         return id;
