@@ -41,7 +41,7 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{projectId}")
     public ResponseEntity<ProjectDTO> updateProject(@PathVariable Long projectId, @RequestParam Long userId, @RequestBody ProjectUpdateDTO updateDto) {
 
         AppUser appUser = appUserService.getUserById(userId);
@@ -71,7 +71,7 @@ public class ProjectController {
         return ResponseEntity.ok(projects);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{projectId}")
     public ResponseEntity<ProjectDTO> deleteProject(@PathVariable Long projectId, @RequestParam Long userId) {
 
         AppUser appUser = appUserService.getUserById(userId);
