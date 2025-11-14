@@ -29,7 +29,7 @@ public class TeamController {
         this.appUserService = appUserService;
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<TeamDTO> createTeam(@Valid @RequestBody TeamCreateDTO createDTO,
                                               @RequestParam Long userId) {
 
@@ -85,7 +85,7 @@ public class TeamController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<TeamDTO> deleteTeam(@PathVariable Long teamId,
+    public ResponseEntity<TeamDTO> deleteTeam(@PathVariable Long id,
                                               @RequestParam Long userId) {
 
         AppUser appUser = appUserService.getUserById(userId);
@@ -93,8 +93,8 @@ public class TeamController {
         if (!appUser.hasRole(Role.PROJECTMANAGER))
             throw new UnauthorizedException(("Only Project Managers can delete teams."));
 
-        TeamDTO team = teamService.findById(teamId);
-        teamService.deleteTeam(teamId);
+        TeamDTO team = teamService.findById(id);
+        teamService.deleteTeam(id);
         return ResponseEntity.ok(team);
     }
 }

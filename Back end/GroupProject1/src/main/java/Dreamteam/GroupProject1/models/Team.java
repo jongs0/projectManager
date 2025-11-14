@@ -2,6 +2,7 @@ package Dreamteam.GroupProject1.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,7 +15,7 @@ public class Team {
     private String name;
 
     @ManyToMany(mappedBy = "teams")
-    private List<AppUser> teamMembers;
+    private List<AppUser> teamMembers = new ArrayList<>();
 
 
     @ManyToOne(optional = true)
