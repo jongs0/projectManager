@@ -1,4 +1,5 @@
-import TaskComponent from "../components/Task/TaskComponent.tsx";
+import TaskComponent from "../components/TaskComponent.tsx";
+import TeamComponent from "../components/TeamComponent.tsx";
 
 
 const Project = () => {
@@ -13,6 +14,18 @@ const Project = () => {
                 margin: "16px",
             }}>
                 <strong style={{ display: "block", fontSize: "30px", textAlign: "center" }}>Teams</strong>
+                <div style={{
+                    flex:1,
+                    height: "calc(100vh - 160px)",
+                    width: "300px",
+                    marginTop: "8px", 
+                    overflowY: "scroll",
+                    overflowX: "hidden"
+                }}>
+                    <TeamComponent/>
+                    <TeamComponent/>
+                    <TeamComponent/>
+                </div>
             </div>
 
 
