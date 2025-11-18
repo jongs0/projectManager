@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CommentComponent from "../components/Comment.tsx";
+import CommentComponent from "../components/Task/Comment.tsx";
 import { Button } from "react-bootstrap";
 import TaskTitle from "../components/Task/TaskTitle.tsx";
 import TaskDescription from "../components/Task/TaskDescription.tsx";

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "react-bootstrap";
-import CommentComponent from "../Comment.tsx";
+import CommentComponent from "./Comment.tsx";
 
 
 const TaskCommentList = () => {
