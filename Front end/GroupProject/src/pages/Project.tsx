@@ -1,4 +1,4 @@
-import TaskComponent from "../components/TaskComponent.tsx";
+import TaskComponent from "../components/Task/TaskComponent.tsx";
 
 
 const Project = () => {
