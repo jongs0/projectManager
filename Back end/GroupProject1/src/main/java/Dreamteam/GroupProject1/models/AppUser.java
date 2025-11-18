@@ -65,6 +65,10 @@ public class AppUser {
         return teams;
     }
 
+    public void addTeam(Team team) {
+        this.teams.add(team);
+    }
+
     public List<Comment> getComments() {
         return comments;
     }
@@ -75,10 +79,6 @@ public class AppUser {
 
     public void setWatchedTasks(List<Task> watchedTasks) {
         this.watchedTasks = watchedTasks;
-    }
-
-    public void setTeams(List<Team> teams) {
-        this.teams = teams;
     }
 
     public void setComments(List<Comment> comments) {

@@ -43,7 +43,7 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @DeleteMapping("/comments/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<String> deleteComment(@PathVariable Long id, @RequestParam Long userId) {
 
         AppUser appUser = appUserService.getUserById(userId);
