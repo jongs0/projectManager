@@ -1,4 +1,4 @@
-package Dreamteam.GroupTask1.controllers;
+package Dreamteam.GroupProject1.controllers;
 
 import Dreamteam.GroupProject1.controllers.CommentController;
 import Dreamteam.GroupProject1.controllers.Exceptions.UnauthorizedException;

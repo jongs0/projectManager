@@ -65,8 +65,10 @@ public class TeamService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + userId));
 
         team.addTeamMember(appUser);
-        Team savedTeam = teamRepository.save(team);
-        return TeamDTO.fromEntity(savedTeam);
+        appUser.addTeam(team);
+        appUserRepository.save(appUser);
+        teamRepository.save(team);
+        return TeamDTO.fromEntity(team);
     }
 
     public TeamDTO removeMember(Long teamId, Long userId) {
