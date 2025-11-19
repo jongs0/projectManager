@@ -1,20 +1,25 @@
 import { createStore } from "@odemian/react-store";
+import type { Role } from "../types/models.js";
 
 interface User {
-    username: String
-    id: number
+    email: String
+    password: String
+    id: number | null
+    role: Role | null;
 }
 
 export const [currentUser, updateUser] = createStore<User>({
-    username: "",
-    id: NaN,
+    email: "",
+    password: "",
+    id: null,
+    role: null
 });
 
 export const logout = () => {
     updateUser({
-        username: "",
-        id: NaN
-    })
-}
-
-// Alles hierboven moet aangepast worden! Placeholder!!!
+        email: "",
+        password: "",
+        id: null,
+        role: null
+    });
+};

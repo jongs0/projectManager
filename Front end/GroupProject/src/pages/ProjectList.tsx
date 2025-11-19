@@ -17,7 +17,8 @@ const ProjectList = () => {
         isLoading,
         error,
     } = useQuery<ProjectDTO[]>({
-        queryKey: ["projects"],
+        queryKey: ["projects", userLogin?.id],
+        enabled: !!userLogin?.id,
         queryFn: async () => {
             const response = await fetch(`${API_URL}/myProjects?userId=${userLogin.id}`);
             if (!response.ok) {
