@@ -64,6 +64,10 @@ public class Task {
         this.comments = comments;
     }
 
+    public Project getProject() {
+        return project;
+    }
+
     public void setProject(Project project) {
         this.project = project;
     }
