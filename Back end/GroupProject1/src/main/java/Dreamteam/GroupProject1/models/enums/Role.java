@@ -5,17 +5,7 @@ public enum Role {
     DEVELOPER,
     PROJECTMANAGER;
 
-    @Override
-    public String toString() {
-        switch (this) {
-            case CLIENT:
-                return "Client";
-            case DEVELOPER:
-                return "Developer";
-            case PROJECTMANAGER:
-                return "Project Manager";
-            default:
-                throw new IllegalArgumentException();
-        }
+    public String toLower() {
+        return this.name().toLowerCase();
     }
 }

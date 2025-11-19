@@ -8,19 +8,18 @@ import Task from "./pages/Task.tsx";
 
 function Router() {
   
-  if (!currentUser.email) {
-    
-  }
+  const user = currentUser();
+
   return (
     
     <BrowserRouter>
     <Routes>
     
-    {!currentUser.email && (
+    {!user.email && (
       <Route path="*" element={<Login />} />
     )}
         
-    {currentUser.email && (
+    {user.email && (
       <Route element={<MainLayout  />}>
       <Route path="projects" element={<ProjectList />} />
       <Route path="projects/:projectId" element={<Project/>} />

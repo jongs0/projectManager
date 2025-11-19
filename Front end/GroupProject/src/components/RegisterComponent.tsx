@@ -37,11 +37,7 @@ const RegisterComponent = () => {
         },
         
         onSuccess: (user) => {
-            updateUser({
-                email: user.email,
-                password: "",
-                id: user.id
-            })
+            updateUser(user)
             navigate("/projects")
         },
         onError: () => {
@@ -61,14 +57,14 @@ const RegisterComponent = () => {
         />
         
         <input 
-        type="text"
+        type="password"
         value={register.tempPassword}
         onChange={(e) => setRegister({ ...register, tempPassword: e.target.value})}
         placeholder="Enter password"
         />
         
         <input 
-        type="text"
+        type="password"
         value={register.verifiedPassword}
         onChange={(e) => setRegister({ ...register, verifiedPassword: e.target.value})}
         placeholder="Verify password"
@@ -76,7 +72,7 @@ const RegisterComponent = () => {
         
         <Form.Select aria-label="Select your role"
         value={register.role}
-        onChange={(e) => setRegister({ ...register, role: e.target.value })}
+        onChange={(e) => setRegister({ ...register, role: e.target.value as Role })}
         >
         
         <option value="">Choose your role</option>
@@ -93,17 +89,19 @@ const RegisterComponent = () => {
         )}
         
         <button 
-        disabled={!passwordsMatch || !register.role || register.email === ""} 
+        disabled={handleRegistration.isPending || !passwordsMatch || !register.role || register.email === ""} 
         onClick={() => {
             const registerDto: AppUserCreateDTO = {
                 email: register.email,
                 password: register.verifiedPassword,
                 role: register.role
             };
-            
+            console.log(registerDto);
+
             handleRegistration.mutate(registerDto);
-        }}>
-        Register
+        }}
+        >
+        {handleRegistration.isPending ? "Registering..." : "Register"}
         </button>
 
         </div>
