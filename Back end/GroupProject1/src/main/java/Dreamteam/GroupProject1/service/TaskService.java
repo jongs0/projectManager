@@ -34,7 +34,12 @@ public class TaskService {
 
     public TaskDTO createTask(TaskCreateDTO createDTO) {
         Task task = createDTO.toEntity();
+        Project project = projectRepository.findById(createDTO.projectId())
+                .orElseThrow(() -> new EntityNotFoundException("Project not found with ID: " + createDTO.projectId()));
+
+        task.setProject(project);
         Task savedTask = taskRepository.save(task);
+
         return TaskDTO.fromEntity(savedTask);
     }
 

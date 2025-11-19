@@ -9,6 +9,7 @@ import Dreamteam.GroupProject1.models.Project;
 import Dreamteam.GroupProject1.repository.AppUserRepository;
 import Dreamteam.GroupProject1.repository.ProjectRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
+    @Transactional
     public ProjectDTO createProject(ProjectCreateDTO createDTO) {
         Project project = createDTO.toEntity();
         Project savedProject = projectRepository.save(project);
