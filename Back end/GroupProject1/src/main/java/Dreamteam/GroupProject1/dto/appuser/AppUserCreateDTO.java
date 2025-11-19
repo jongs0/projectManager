@@ -20,7 +20,6 @@ public record AppUserCreateDTO(
         @Size(min = 8, message = "Password must be at least 8 characters long.")
         String password,
 
-        @Enumerated(EnumType.STRING)
         Role role
 
 ) {
