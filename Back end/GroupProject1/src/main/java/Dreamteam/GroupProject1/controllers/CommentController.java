@@ -42,12 +42,12 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @PutMapping("/{Id}/edit")
+    @PutMapping("/{commentId}/edit")
     public ResponseEntity<CommentDTO> updateComment(@PathVariable Long commentId, @RequestParam Long userId, @RequestBody CommentUpdateDTO updateDto) {
 
         AppUser appUser = appUserService.getUserById(userId);
 
-        if (!appUser.hasRole(Role.PROJECTMANAGER) || !appUser.hasRole(Role.DEVELOPER))
+        if (!(appUser.hasRole(Role.PROJECTMANAGER) || appUser.hasRole(Role.DEVELOPER)))
             throw new UnauthorizedException("Only Project Managers and Developers can update comments.");
 
         CommentDTO updatedComment = commentService.updateComment(commentId, userId, updateDto);
