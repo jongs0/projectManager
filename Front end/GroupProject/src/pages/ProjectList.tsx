@@ -4,6 +4,8 @@ import { useNavigate } from "react-router";
 import type { ProjectDTO } from "../types/models.js";
 import { API_URL } from "../api/config.ts";
 import { currentUser } from "../stores/userStore.ts";
+import { Button } from "react-bootstrap";
+import NewProjectButton from "../components/NewProjectButton.tsx";
 
 
 const ProjectList = () => {
@@ -77,9 +79,13 @@ const ProjectList = () => {
                         />
                     </div>
                 )) : (
-                    <p>No projects available</p>
+                    <div style={{ marginTop: "-40px" }}>
+                        <p>No projects available</p>
+                        <NewProjectButton/>
+                    </div>
                 )}
-            </div >
+                <NewProjectButton/>
+            </div>
         </div >
 
     )
