@@ -2,6 +2,7 @@ package Dreamteam.GroupProject1.service;
 
 import Dreamteam.GroupProject1.dto.comment.CommentCreateDTO;
 import Dreamteam.GroupProject1.dto.comment.CommentDTO;
+import Dreamteam.GroupProject1.dto.comment.CommentUpdateDTO;
 import Dreamteam.GroupProject1.models.AppUser;
 import Dreamteam.GroupProject1.models.Comment;
 import Dreamteam.GroupProject1.models.Task;
@@ -39,6 +40,20 @@ public class CommentService {
                 .orElseThrow(() -> new EntityNotFoundException("There's no post with ID " + taskId));
         comment.setTask(task);
 
+        Comment savedComment = commentRepository.save(comment);
+        return CommentDTO.fromEntity(savedComment);
+    }
+
+    public CommentDTO updateComment(Long id, Long requesterId, CommentUpdateDTO updateDTO) {
+
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Comment not found with ID: " + id));
+
+        if (!comment.getUser().getId().equals(requesterId)) {
+            throw new IllegalArgumentException("You can only edit your own comments.");
+        }
+
+        updateDTO.updateComment(comment);
         Comment savedComment = commentRepository.save(comment);
         return CommentDTO.fromEntity(savedComment);
     }
