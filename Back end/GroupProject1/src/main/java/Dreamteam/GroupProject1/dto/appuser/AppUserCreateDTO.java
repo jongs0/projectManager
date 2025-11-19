@@ -3,6 +3,7 @@ package Dreamteam.GroupProject1.dto.appuser;
 import Dreamteam.GroupProject1.models.AppUser;
 import Dreamteam.GroupProject1.models.enums.Role;
 import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -19,7 +20,7 @@ public record AppUserCreateDTO(
         @Size(min = 8, message = "Password must be at least 8 characters long.")
         String password,
 
-        @Enumerated
+        @Enumerated(EnumType.STRING)
         Role role
 
 ) {

@@ -19,6 +19,13 @@ target/
 *.iml
 *.ipr
 
+# Ignore frontend package files (your local changes)
+Front end/GroupProject/package.json
+Front end/GroupProject/package-lock.json
+
+# Ignore backend local config
+Back end/GroupProject1/src/main/resources/application-local.properties
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -31,4 +38,3 @@ build/
 
 ### VS Code ###
 .vscode/
-src/main/resources/application-local.properties
