@@ -66,5 +66,4 @@ public class CommentController {
         commentService.deleteComment(id);
         return ResponseEntity.ok("Comment with ID " + id + " deleted");
     }
-
 }
