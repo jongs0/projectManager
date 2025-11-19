@@ -42,7 +42,7 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @PutMapping("/{commentId}")
+    @PutMapping("/{Id}/edit")
     public ResponseEntity<CommentDTO> updateComment(@PathVariable Long commentId, @RequestParam Long userId, @RequestBody CommentUpdateDTO updateDto) {
 
         AppUser appUser = appUserService.getUserById(userId);
@@ -54,7 +54,7 @@ public class CommentController {
         return ResponseEntity.ok(updatedComment);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}/delete")
     public ResponseEntity<String> deleteComment(@PathVariable Long id, @RequestParam Long userId) {
 
         AppUser appUser = appUserService.getUserById(userId);
