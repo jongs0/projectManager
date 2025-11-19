@@ -47,8 +47,9 @@ public class CommentController {
 
         AppUser appUser = appUserService.getUserById(userId);
 
-        if (!(appUser.hasRole(Role.PROJECTMANAGER) || appUser.hasRole(Role.DEVELOPER)))
-            throw new UnauthorizedException("Only Project Managers and Developers can update comments.");
+        if (appUser.hasRole(Role.CLIENT)) {
+            throw new UnauthorizedException("Clients cannot update comments.");
+        }
 
         CommentDTO updatedComment = commentService.updateComment(commentId, userId, updateDto);
         return ResponseEntity.ok(updatedComment);
