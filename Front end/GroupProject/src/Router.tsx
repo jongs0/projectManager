@@ -5,23 +5,29 @@ import { currentUser } from "./stores/userStore.ts";
 import Login from "./pages/login.tsx";
 import Project from "./pages/Project.tsx";
 import Task from "./pages/Task.tsx";
-import Team from "./pages/Team.tsx";
 
 function Router() {
   
-  if (currentUser().username == "") return (<Login/>)
-
+  if (!currentUser.email) {
+    
+  }
   return (
     
     <BrowserRouter>
-      <Routes>
-        <Route element={<MainLayout  />}>
-          <Route path="projects" element={<ProjectList />} />
-          <Route path="projects/:projectId" element={<Project/>} />
-          <Route path="projects/:projectId/task/:taskId" element={<Task/>} />
-          <Route path="teams/:teamId" element={<Team/>} />
-        </Route>
-      </Routes>
+    <Routes>
+    
+    {!currentUser.email && (
+      <Route path="*" element={<Login />} />
+    )}
+        
+    {currentUser.email && (
+      <Route element={<MainLayout  />}>
+      <Route path="projects" element={<ProjectList />} />
+      <Route path="projects/:projectId" element={<Project/>} />
+      <Route path="projects/:projectId/task/:taskId" element={<Task/>} />
+      </Route>
+    )}
+    </Routes>
     </BrowserRouter>
   );
 }
