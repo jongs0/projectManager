@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Button } from "react-bootstrap";
 import type { CommentUpdateDTO } from "../../types/models.js";
 import { API_URL } from "../../api/config.ts";
-import { useParams } from "react-router";
 import { currentUser } from "../../stores/userStore.ts";
 
 const CommentComponent = ({ commentAuthor, body, commentId, authorId }) => {
