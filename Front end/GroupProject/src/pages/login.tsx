@@ -33,7 +33,8 @@ const Login = () => {
             updateUser({
                 email: user.email,
                 password: "",
-                id: user.id
+                id: user.id,
+                role: user.role
             });
             navigate("/projects");
         },
