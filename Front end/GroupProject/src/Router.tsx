@@ -8,9 +8,8 @@ import Task from "./pages/Task.tsx";
 
 function Router() {
   
-  if (!currentUser.email) {
-    
-  }
+  const user = currentUser();
+  
   return (
     
     <BrowserRouter>

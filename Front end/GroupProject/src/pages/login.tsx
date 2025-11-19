@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import type { AppUserLoginDTO } from "../types/models.js";
 import RegisterComponent from "../components/RegisterComponent.tsx";
 
+
 const Login = () => {
     
     const [login, setLogin] = useState({
@@ -57,7 +58,7 @@ const Login = () => {
             />
             
             <input   
-            type="text"
+            type="password"
             value={login.password}
             onChange={(e) => setLogin({ ...login, password: e.target.value})}
             placeholder="Enter password"
@@ -80,7 +81,7 @@ const Login = () => {
             <>
             <RegisterComponent/>
             <button onClick={() => setIsRegistering(false)}>Go back</button>
-
+            
             </>
         )}
         

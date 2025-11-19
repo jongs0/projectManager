@@ -3,20 +3,19 @@ import { createStore } from "@odemian/react-store";
 interface User {
     email: String
     password: String
-    id: number
+    id: number | null;
 }
 
 export const [currentUser, updateUser] = createStore<User>({
     email: "",
     password: "",
-    id: NaN
+    id: null
 });
 
 export const logout = () => {
     updateUser({
         email: "",
         password: "",
-        id: NaN
-    })
-}
-// Alles hierboven moet aangepast worden! Placeholder!!!
+        id: null
+    });
+};
