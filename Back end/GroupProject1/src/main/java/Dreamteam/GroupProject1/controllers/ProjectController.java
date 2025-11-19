@@ -4,10 +4,13 @@ import Dreamteam.GroupProject1.controllers.Exceptions.UnauthorizedException;
 import Dreamteam.GroupProject1.dto.project.ProjectCreateDTO;
 import Dreamteam.GroupProject1.dto.project.ProjectDTO;
 import Dreamteam.GroupProject1.dto.project.ProjectUpdateDTO;
+import Dreamteam.GroupProject1.dto.team.TeamCreateDTO;
+import Dreamteam.GroupProject1.dto.team.TeamDTO;
 import Dreamteam.GroupProject1.models.AppUser;
 import Dreamteam.GroupProject1.models.enums.Role;
 import Dreamteam.GroupProject1.service.AppUserService;
 import Dreamteam.GroupProject1.service.ProjectService;
+import Dreamteam.GroupProject1.service.TeamService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,23 +24,27 @@ import java.util.List;
 @RequestMapping("/myProjects")
 public class ProjectController {
     final private ProjectService projectService;
-    final private AppUserService appUserService;
+    final private AppUserService appUserService;;
+    final private TeamService teamService;
 
     @Autowired
-    public ProjectController(ProjectService projectService, AppUserService appUserService) {
+    public ProjectController(ProjectService projectService, AppUserService appUserService, TeamService teamService) {
         this.projectService = projectService;
         this.appUserService = appUserService;
+        this.teamService = teamService;
     }
 
     @PostMapping
-    public ResponseEntity<ProjectDTO> createProject(@Valid @RequestBody ProjectCreateDTO createDto, @RequestParam Long userId) {
-
+    public ResponseEntity<ProjectDTO> createProject(@Valid @RequestBody ProjectCreateDTO createDTO, @RequestParam String teamName, @RequestParam Long userId) {
         AppUser appUser = appUserService.getUserById(userId);
 
         if (!appUser.hasRole(Role.PROJECTMANAGER))
             throw new UnauthorizedException("Only Project Managers can create projects");
+        ProjectDTO created = projectService.createProject(createDTO);
 
-        ProjectDTO created = projectService.createProject(createDto);
+        TeamCreateDTO teamDto = new TeamCreateDTO(created.id(), teamName);
+        TeamDTO createdTeam = teamService.createTeam(teamDto);
+        teamService.addMember(createdTeam.id(), appUser.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 

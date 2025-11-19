@@ -1,7 +1,11 @@
 import { useNavigate } from "react-router";
 
+interface TaskComponentProps {
+    taskName: string,
+    taskId: number
+}
 
-const TaskComponent = () => {
+const TaskComponent = ({ taskName, taskId }: TaskComponentProps) => {
     const navigate = useNavigate();
     return (
         <div style={{
@@ -15,9 +19,9 @@ const TaskComponent = () => {
         }}
             onMouseOver={(e) => (e.currentTarget.style.background = "rgba(19, 19, 19, 1)")}
             onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(0, 0, 0, 1)")}
-            onClick={() => { navigate("/projects/1/task/1"); console.log("a") }}
+            onClick={() => { navigate(`/projects/1/task/${taskId}`); console.log("a") }}
         >
-            <p style={{ display: "block", fontSize: "25px", textAlign: "center" }}>todo: i forgor</p>
+            <p style={{ display: "block", fontSize: "25px", textAlign: "center" }}>{taskName}</p>
         </div>
     )
 
