@@ -1,13 +1,46 @@
 import { useState } from "react";
 import { Button } from "react-bootstrap";
+import type { CommentCreateDTO } from "../../types/models.js";
+import { API_URL } from "../../api/config.ts";
+import { useMutation } from "@tanstack/react-query";
+import { currentUser } from "../../stores/userStore.ts";
 
 
-const TaskCommentField = () => {
-    const [commentText, setCommentText] = useState("");
+const TaskCommentField = ({ taskId }) => {
+
+    const user = currentUser();
+
+    const [commentText, setCommentText] = useState("");    
+
+     const postNewComment = useMutation({
+        mutationFn: async (dto: CommentCreateDTO) => {
+            const res = await fetch(`${API_URL}/comments/?userId=${user.id}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(dto),
+            });
+            if (!res.ok) throw new Error("Comment creation failed");
+            return res.json();
+        },
+        onSuccess: () => {
+            setCommentText("");
+        },
+        
+        onError: () => {
+            console.log("Comment creation failed: unable to place comment.");
+        },
+    });
 
     const postComment = (event: any) => {
         event.preventDefault();
-        //postNewComment.mutate(); 
+
+        if (commentText.trim().length === 0) return;
+
+        postNewComment.mutate({
+        body: commentText,
+        taskId: taskId,
+        userId: user.id
+});
         setCommentText("");
     };
 
@@ -41,7 +74,7 @@ const TaskCommentField = () => {
                 lineHeight: "12px",
                 padding: "0px",
             }}
-                disabled={commentText == ""}>
+                disabled={commentText.trim() === ""}>
                 submit
             </Button>
         </form>
