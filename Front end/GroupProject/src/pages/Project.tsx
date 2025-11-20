@@ -78,7 +78,7 @@ const Project = () => {
                     overflowX: "hidden"
                 }}>
                     {project && project.tasks.length > 0 ? project.tasks.map((task) => (
-                        <TaskComponent key={task.id} taskName={task.name} taskId={task.id} />
+                        <TaskComponent key={task.id} taskName={task.name} taskId={task.id} projectId={project.id} />
                     )) : (
                         <p>No tasks</p>
                     )}

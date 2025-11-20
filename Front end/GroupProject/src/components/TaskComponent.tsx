@@ -1,12 +1,15 @@
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 interface TaskComponentProps {
     taskName: string,
-    taskId: number
+    taskId: number,
+    projectId: number
+
 }
 
-const TaskComponent = ({ taskName, taskId }: TaskComponentProps) => {
+const TaskComponent = ({ taskName, taskId, projectId }: TaskComponentProps) => {
     const navigate = useNavigate();
+    
     return (
         <div style={{
             width: "268px",
@@ -19,7 +22,7 @@ const TaskComponent = ({ taskName, taskId }: TaskComponentProps) => {
         }}
             onMouseOver={(e) => (e.currentTarget.style.background = "rgba(19, 19, 19, 1)")}
             onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(0, 0, 0, 1)")}
-            onClick={() => { navigate(`/projects/1/task/${taskId}`); console.log("a") }}
+            onClick={() => { navigate(`/projects/${projectId}/task/${taskId}`)}}
         >
             <p style={{ display: "block", fontSize: "25px", textAlign: "center" }}>{taskName}</p>
         </div>
