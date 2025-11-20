@@ -13,7 +13,7 @@ const TaskTitle = () => {
     const { taskId } = useParams();
 
     const { data: taskData, refetch } = useQuery<TaskDTO>({
-        queryKey: ["taskTitle", taskId],
+        queryKey: ["taskPage", taskId],
         queryFn: async () => {
             const res = await fetch(`${API_URL}/tasks/${taskId}`);
             if (!res.ok) throw new Error("Failed to load task");
@@ -57,7 +57,7 @@ const TaskTitle = () => {
 
         editTitle.mutate({
             name: titleText,
-            description: taskData.body
+            description: taskData?.body ?? ""
         });
     };
 

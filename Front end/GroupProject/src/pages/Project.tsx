@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { API_URL } from "../api/config.ts";
-// import TaskComponent from "../components/Task/TaskComponent.tsx";
+import NewTaskBox from "../components/Task/NewTaskBox.tsx";
 import { currentUser } from "../stores/userStore.ts";
 import type { ProjectDTO, TaskDTO } from "../types/models.js";
 import TaskComponent from "../components/TaskComponent.tsx";
@@ -18,6 +18,7 @@ const Project = () => {
         data: project,
         isLoading,
         error,
+        refetch
     } = useQuery<ProjectDTO>({
         queryKey: ["projects", projectId],
         queryFn: async () => {
@@ -82,6 +83,11 @@ const Project = () => {
                     )) : (
                         <p>No tasks</p>
                     )}
+
+                    <NewTaskBox
+                        projectId={project!.id}
+                        refreshTasks={() => refetch()}
+                    />
                 </div>
             </div>
 

@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import type { TaskDTO, TaskUpdateDTO } from "../../types/models.js";
@@ -11,9 +11,10 @@ const TaskDescription = () => {
 
     const user = currentUser();
     const { taskId } = useParams();
+    const queryClient = useQueryClient();
 
-    const { data: taskData, refetch } = useQuery<TaskDTO>({
-    queryKey: ["task", taskId],
+    const { data: taskData } = useQuery<TaskDTO>({
+    queryKey: ["taskPage", taskId],
     queryFn: async () => {
         const res = await fetch(`${API_URL}/tasks/${taskId}`);
         if (!res.ok) throw new Error("Failed to load task");
@@ -34,7 +35,7 @@ const TaskDescription = () => {
 
       const editDesc = useMutation({
         mutationFn: async (dto: TaskUpdateDTO) => {
-            const res = await fetch(`${API_URL}/tasks/?userId=${user.id}`, {
+            const res = await fetch(`${API_URL}/tasks/${taskId}?userId=${user.id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(dto),
@@ -43,7 +44,7 @@ const TaskDescription = () => {
             return res.json();
         },
         onSuccess: () => {
-            refetch();
+            queryClient.invalidateQueries({ queryKey: ["taskPage", taskId] });
         },
         
         onError: () => {
@@ -55,7 +56,7 @@ const TaskDescription = () => {
         e.preventDefault();
 
         editDesc.mutate({
-            name: taskData?.name || "",
+            name: taskData?.name ?? "",
             description: descText
         });
     };

@@ -3,22 +3,24 @@ import TaskTitle from "../components/Task/TaskTitle.tsx";
 import TaskDescription from "../components/Task/TaskDescription.tsx";
 import TaskCommentField from "../components/Task/TaskCommentField.tsx";
 import TaskCommentList from "../components/Task/TaskCommentList.tsx";
-import TaskWatchers from "../components/Task/TaskWatchers.tsx";
 import type { ProjectDTO, TaskDTO } from "../types/models.js";
 import { useParams } from "react-router";
 import { currentUser } from "../stores/userStore.ts";
 import { useQuery } from "@tanstack/react-query";
 import { API_URL } from "../api/config.ts";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Task = () => {
     
     const { taskId } = useParams();
+    const numericTaskId = Number(taskId);
+    const queryClient = useQueryClient();
     const user = currentUser();
     
     const { data: taskData, isLoading, error } = useQuery<TaskDTO>({
-        queryKey: ["taskPage", taskId],
+        queryKey: ["taskPage", numericTaskId],
         queryFn: async () => {
-            const res = await fetch(`${API_URL}/tasks/${taskId}`);
+            const res = await fetch(`${API_URL}/tasks/${numericTaskId}`);
             if (!res.ok) throw new Error("Failed to load task");
             return await res.json();
         },
@@ -58,7 +60,7 @@ const Task = () => {
             alignItems: "center"
         }}>
         
-        <TaskTitle />
+        <TaskTitle/>
         
         <TaskDescription />
         
@@ -85,11 +87,10 @@ const Task = () => {
                 flexDirection: "column",
                 alignItems: "center"
             }}>
-                
-            <TaskWatchers teamMembers={taskData.watchers} />
 
-            <TaskCommentField taskId={taskData.id} />
-            <TaskCommentList comments={taskData.comments} />
+            <TaskCommentField taskId={numericTaskId} />
+            <TaskCommentList comments={taskData.comments} />    
+
             </div>
             
             </div>
