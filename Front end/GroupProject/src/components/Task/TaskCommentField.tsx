@@ -64,10 +64,11 @@ const TaskCommentField = ({ taskId }: TaskCommentFieldProps) => {
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
                 disabled={false}
+                placeholder="Comment"
                 style={{
                     width: "90%",
                     height: "80px",
-                    background: "rgba(30, 30, 30, 1)",
+                    background: "black",
                     border: "2px solid white",
                     borderRadius: "10px",
                     margin: "8px",

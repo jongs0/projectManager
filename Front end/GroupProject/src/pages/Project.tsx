@@ -5,15 +5,14 @@ import { currentUser } from "../stores/userStore.ts";
 import type { ProjectDTO, TaskDTO } from "../types/models.js";
 import TaskComponent from "../components/TaskComponent.tsx";
 import TeamComponent from "../components/TeamComponent.tsx";
-import type Task from "./Task.tsx";
 import { useParams } from "react-router";
 
 
 const Project = () => {
     const { projectId: projectId } = useParams<{ projectId: string }>();
-
+    
     const userLogin = currentUser();
-
+    
     const {
         data: project,
         isLoading,
@@ -29,102 +28,105 @@ const Project = () => {
             return response.json();
         },
     });
-
+    
     if (isLoading) {
         return <div>Loading project...</div>;
     }
-
+    
     if (error) {
         return <div style={{ color: "red" }}>Error: {error.message}</div>;
     }
-
+    
     return (
         <div style={{ flex: 1, display: "flex", }}>
+        <div style={{
+            width: "300px",
+            background: "black",
+            border: "2px solid white",
+            borderRadius: "10px",
+            margin: "16px",
+        }}>
+        <strong style={{ display: "block", fontSize: "30px", textAlign: "center" }}>Teams</strong>
+        <div style={{
+            flex: 1,
+            height: "calc(100vh - 160px)",
+            width: "300px",
+            marginTop: "8px",
+            overflowY: "scroll",
+            overflowX: "hidden"
+        }}>
+        <TeamComponent />
+        <TeamComponent />
+        <TeamComponent />
+        </div>
+        </div>
+        
+        <div style={{ marginLeft: "0px", margin: "16px" }}>
+        <strong style={{ display: "block", fontSize: "25px", textAlign: "center" }}>Backlog</strong>
+        <div style={{
+            flex: 1,
+            height: "calc(100vh - 160px)",
+            width: "300px",
+            background: "black",
+            border: "2px solid white",
+            borderRadius: "10px",
+            marginTop: "8px",
+            overflowY: "scroll",
+            overflowX: "hidden"
+        }}>
+        {project && project.tasks
+            .filter(task => !task.done)
+            .map(task => (
+                <TaskComponent
+                key={task.id}
+                taskName={task.name}
+                taskId={task.id}
+                projectId={project.id}
+                done={task.done}
+                isWatching={task.watchers.some(w => w.id === userLogin.id)}
+                />
+            ))}
+            
+            <NewTaskBox
+            projectId={project!.id}
+            refreshTasks={() => refetch()}
+            />
+            </div>
+            </div>
+            
+            
+            <div style={{ marginLeft: "0px", margin: "16px" }}>
+            <strong style={{ display: "block", fontSize: "25px", textAlign: "center" }}>Done</strong>
             <div style={{
+                flex: 1,
+                height: "calc(100vh - 160px)",
                 width: "300px",
                 background: "black",
                 border: "2px solid white",
                 borderRadius: "10px",
-                margin: "16px",
+                marginTop: "8px",
+                overflowY: "scroll",
+                overflowX: "hidden"
             }}>
-                <strong style={{ display: "block", fontSize: "30px", textAlign: "center" }}>Teams</strong>
-                <div style={{
-                    flex: 1,
-                    height: "calc(100vh - 160px)",
-                    width: "300px",
-                    marginTop: "8px",
-                    overflowY: "scroll",
-                    overflowX: "hidden"
-                }}>
-                    <TeamComponent />
-                    <TeamComponent />
-                    <TeamComponent />
-                </div>
-            </div>
-
-
-
-
-            <div style={{ marginLeft: "0px", margin: "16px" }}>
-                <strong style={{ display: "block", fontSize: "25px", textAlign: "center" }}>Backlog</strong>
-                <div style={{
-                    flex: 1,
-                    height: "calc(100vh - 160px)",
-                    width: "300px",
-                    background: "black",
-                    border: "2px solid white",
-                    borderRadius: "10px",
-                    marginTop: "8px",
-                    overflowY: "scroll",
-                    overflowX: "hidden"
-                }}>
-                    {project && project.tasks.length > 0 ? project.tasks.map((task) => (
-                        <TaskComponent key={task.id} taskName={task.name} taskId={task.id} projectId={project.id} />
-                    )) : (
-                        <p>No tasks</p>
-                    )}
-
-                    <NewTaskBox
-                        projectId={project!.id}
-                        refreshTasks={() => refetch()}
+            {project && project.tasks
+                .filter(task => task.done)
+                .map(task => (
+                    <TaskComponent
+                    key={task.id}
+                    taskName={task.name}
+                    taskId={task.id}
+                    projectId={project.id}
+                    done={task.done}
+                    isWatching={task.watchers.some(w => w.id === userLogin.id)}
                     />
+                ))}
                 </div>
-            </div>
-
-
-            <div style={{ marginLeft: "0px", margin: "16px" }}>
-                <strong style={{ display: "block", fontSize: "25px", textAlign: "center" }}>Done</strong>
-                <div style={{
-                    flex: 1,
-                    height: "calc(100vh - 160px)",
-                    width: "300px",
-                    background: "black",
-                    border: "2px solid white",
-                    borderRadius: "10px",
-                    marginTop: "8px",
-                    overflowY: "scroll",
-                    overflowX: "hidden"
-                }}>
-                    <TaskComponent />
-                    <TaskComponent />
-                    <TaskComponent />
-                    <TaskComponent />
-                    <TaskComponent />
-                    <TaskComponent />
-                    <TaskComponent />
-                    <TaskComponent />
-                    <TaskComponent />
-                    <TaskComponent />
-                    <TaskComponent />
-                    <TaskComponent />
-                    <TaskComponent />
                 </div>
-            </div>
-
-        </div>
-
-    )
-
-}
-
-export default Project;
+                
+                </div>
+                
+            )
+            
+        }
+        
+        export default Project;

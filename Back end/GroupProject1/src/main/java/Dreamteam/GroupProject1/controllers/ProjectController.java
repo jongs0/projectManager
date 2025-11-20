@@ -25,26 +25,20 @@ import java.util.List;
 public class ProjectController {
     final private ProjectService projectService;
     final private AppUserService appUserService;;
-    final private TeamService teamService;
 
     @Autowired
-    public ProjectController(ProjectService projectService, AppUserService appUserService, TeamService teamService) {
+    public ProjectController(ProjectService projectService, AppUserService appUserService) {
         this.projectService = projectService;
         this.appUserService = appUserService;
-        this.teamService = teamService;
     }
 
     @PostMapping
-    public ResponseEntity<ProjectDTO> createProject(@Valid @RequestBody ProjectCreateDTO createDTO, @RequestParam String teamName, @RequestParam Long userId) {
+    public ResponseEntity<ProjectDTO> createProject(@Valid @RequestBody ProjectCreateDTO createDTO, @RequestParam Long userId) {
         AppUser appUser = appUserService.getUserById(userId);
 
         if (!appUser.hasRole(Role.PROJECTMANAGER))
             throw new UnauthorizedException("Only Project Managers can create projects");
         ProjectDTO created = projectService.createProject(createDTO, appUser);
-
-        TeamCreateDTO teamDto = new TeamCreateDTO(created.id(), teamName);
-        TeamDTO createdTeam = teamService.createTeam(teamDto);
-        teamService.addMember(createdTeam.id(), appUser.getId());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }

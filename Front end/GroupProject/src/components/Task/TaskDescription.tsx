@@ -80,6 +80,7 @@ const TaskDescription = () => {
                     value={descText}
                     onChange={(e) => setDescText(e.target.value)}
                     disabled={isClient}
+                    placeholder="Description"
                     style={{
                         width: "90%",
                         height: "200px",

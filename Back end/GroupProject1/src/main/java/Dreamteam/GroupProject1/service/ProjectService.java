@@ -1,11 +1,13 @@
 package Dreamteam.GroupProject1.service;
 
+import Dreamteam.GroupProject1.controllers.Exceptions.UnauthorizedException;
 import Dreamteam.GroupProject1.dto.appuser.AppUserSummaryDTO;
 import Dreamteam.GroupProject1.dto.project.ProjectCreateDTO;
 import Dreamteam.GroupProject1.dto.project.ProjectDTO;
 import Dreamteam.GroupProject1.dto.project.ProjectUpdateDTO;
 import Dreamteam.GroupProject1.models.AppUser;
 import Dreamteam.GroupProject1.models.Project;
+import Dreamteam.GroupProject1.models.Team;
 import Dreamteam.GroupProject1.repository.AppUserRepository;
 import Dreamteam.GroupProject1.repository.ProjectRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,8 +27,9 @@ public class ProjectService {
     }
 
     @Transactional
-    public ProjectDTO createProject(ProjectCreateDTO createDTO) {
+    public ProjectDTO createProject(ProjectCreateDTO createDTO, AppUser owner) {
         Project project = createDTO.toEntity();
+        project.setOwner(owner);
         Project savedProject = projectRepository.save(project);
         return ProjectDTO.fromEntity(savedProject);
     }
@@ -61,11 +64,28 @@ public class ProjectService {
         return ProjectDTO.fromEntity(savedProject);
     }
 
-    public ProjectDTO deleteProject (Long id) {
-        Project projectToBeDeleted = projectRepository.findById(id)
+    @Transactional
+    public ProjectDTO deleteProject(Long id, Long userId) {
+
+        Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Project not found with ID: " + id));
 
-        projectRepository.delete(projectToBeDeleted);
-        return ProjectDTO.fromEntity(projectToBeDeleted);
+        if (project.getOwner() == null || !project.getOwner().getId().equals(userId)) {
+            throw new UnauthorizedException("You can only delete projects that you own");
+        }
+
+        for (Team team : project.getTeams()) {
+            for (AppUser member : team.getTeamMembers()) {
+                member.getTeams().remove(team);
+            }
+            team.getTeamMembers().clear();
+        }
+
+        project.getTeams().clear();
+        project.getTasks().clear();
+
+        projectRepository.delete(project);
+
+        return ProjectDTO.fromEntity(project);
     }
 }
