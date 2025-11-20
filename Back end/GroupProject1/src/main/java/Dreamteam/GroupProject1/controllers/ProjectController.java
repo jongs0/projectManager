@@ -45,6 +45,7 @@ public class ProjectController {
         TeamCreateDTO teamDto = new TeamCreateDTO(created.id(), teamName);
         TeamDTO createdTeam = teamService.createTeam(teamDto);
         teamService.addMember(createdTeam.id(), appUser.getId());
+
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
