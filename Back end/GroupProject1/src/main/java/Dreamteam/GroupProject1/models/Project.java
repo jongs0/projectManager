@@ -39,10 +39,6 @@ public class Project {
         return teams;
     }
 
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-
     public void setTeams(List<Team> teams) {
         this.teams = teams;
     }
@@ -53,5 +49,13 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void addTask(Task task) {
+        tasks.add(task);
+    }
+
+    public void removeTask(Task task) {
+        tasks.remove(task);
     }
 }

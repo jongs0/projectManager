@@ -1,15 +1,47 @@
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
+import type { CommentUpdateDTO } from "../../types/models.js";
+import { API_URL } from "../../api/config.ts";
+import { currentUser } from "../../stores/userStore.ts";
 
-const CommentComponent = ({ username }) => {
+const CommentComponent = ({ commentAuthor, body, commentId, authorId }) => {
+
+    const user = currentUser();
+    const isAuthor = user.id === authorId;
     const [showingButtons, showButtons] = useState(false);
     const [isEditing, setEditing] = useState(false);
-    const [commentText, setCommentText] = useState("comment text here");
+    const [comment, setComment] = useState({
+    body: body,
+    commentId: commentId
+});
+
+
+        const handleEditcomment = useMutation({
+        mutationFn: async (dto: CommentUpdateDTO) => {
+            const res = await fetch(`${API_URL}/comments/${commentId}/edit?userId=${user.id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(dto),
+            });
+            if (!res.ok) throw new Error("Edit failed");
+            return res.json();
+        },
+        onSuccess: (comment) => {
+            setComment(comment);
+            setEditing(false);
+        },
+        onError: () => {
+            console.log("Edit failed: unable to edit comment");
+        },
+    });
 
     const editComment = () => {
-        if (!isEditing) { setEditing(true); return; }
-        //editComment.mutate
-        setEditing(false); // move this into mutate function(?)
+        if (!isEditing) { setEditing(true);
+        } else {
+        handleEditcomment.mutate({ body: comment.body });
+        }
+    
     }
 
     return (
@@ -24,23 +56,29 @@ const CommentComponent = ({ username }) => {
             position: "relative"
         }}
             onMouseOver={(e) => {
-                e.currentTarget.style.background = "rgba(19, 19, 19, 1)";
-                showButtons(true);
+                 e.currentTarget.style.background = "rgba(19, 19, 19, 1)";
+                if (isAuthor) showButtons(true); 
             }}
             onMouseLeave={(e) => {
-                e.currentTarget.style.background = "rgba(0, 0, 0, 1)";
+                 e.currentTarget.style.background = "rgba(0, 0, 0, 1)";
                 showButtons(false);
             }}
-        > {/* change this    vvv   to a check if the current user is the same as the comment's poster  */}
-            {!isEditing && (true) ? <p style={{ display: "block", fontSize: "20px" }}>{commentText}</p> 
-                :
-                <textarea style={{ display: "block", fontSize: "20px" }}
-                    value={commentText}
-                    onChange={(e) => setCommentText(e.target.value)}
-                >{commentText}</textarea>}
+        > 
+                {(!isEditing || !isAuthor) ? (
+                <p style={{ display: "block", fontSize: "20px" }}>
+                    {comment.body}
+                </p>
+            ) : (
+                <textarea
+                    style={{ display: "block", fontSize: "20px" }}
+                    value={comment.body}
+                    onChange={(e) => setComment({ ...comment, body: e.target.value })}
+                    placeholder="Edit comment"
+                />
+            )}
 
 
-            {(showingButtons) && (
+            {showingButtons && isAuthor && (
                 <Button style={{
                     position: "absolute",
                     top: "6px",
@@ -48,14 +86,15 @@ const CommentComponent = ({ username }) => {
                     height: "12px",
                     lineHeight: "12px"
                 }}
-                    onClick={() => { editComment() }}
-                >{isEditing ? "save" : "edit"}</Button>
+                    onClick={() => editComment()}
+                >
+                    {isEditing ? "save" : "edit"}</Button>
             )}
 
             <p style={{
                 display: "block", fontSize: "20px", textAlign: "right", marginRight: "8px",
                 bottom: "6px"
-            }}>{username}</p>
+            }}>{commentAuthor}</p>
         </div>
     )
 

@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import CommentComponent from "./Comment.tsx";
 
 
-const TaskCommentList = () => {
+const TaskCommentList = ({ comments }) => {
 
     return (
         <div style={{
@@ -14,12 +14,19 @@ const TaskCommentList = () => {
             flexDirection: "column",
             alignItems: "center"
         }}>
-            <CommentComponent username="username" />  {/* zet om naar list, en geef username hier door */}
-            <CommentComponent username="abc" />
-            <CommentComponent username="abc" />
-            <CommentComponent username="abc" />
-            <CommentComponent username="abc" />
-            <CommentComponent username="abc" />
+            {comments && comments.length > 0 ? (
+                comments.map((c: any) => (
+                    <CommentComponent
+                        key={c.id}
+                        commentId={c.id}
+                        body={c.body}
+                        commentAuthor={c.appUserDto.email}
+                        authorId={c.appUserDto.id}
+                    />
+                ))
+            ) : (
+                <p style={{ color: "gray", marginTop: "16px" }}>No comments yet.</p>
+            )}
         </div>
     )
 }
