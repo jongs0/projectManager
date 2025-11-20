@@ -81,3 +81,5 @@ const TaskWatchers = ({ teamMembers }: TaskWatchersProps) => {
         </div>
     );
 };
+
+export default TaskWatchers
