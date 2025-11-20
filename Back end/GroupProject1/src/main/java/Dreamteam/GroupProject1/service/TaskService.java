@@ -4,7 +4,7 @@ import Dreamteam.GroupProject1.dto.task.TaskCreateDTO;
 import Dreamteam.GroupProject1.dto.task.TaskDTO;
 import Dreamteam.GroupProject1.dto.task.TaskUpdateDTO;
 import Dreamteam.GroupProject1.models.AppUser;
-import Dreamteam.GroupProject1.models.Project;g
+import Dreamteam.GroupProject1.models.Project;
 import Dreamteam.GroupProject1.models.Task;
 import Dreamteam.GroupProject1.repository.AppUserRepository;
 import Dreamteam.GroupProject1.repository.ProjectRepository;
