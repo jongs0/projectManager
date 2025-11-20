@@ -40,7 +40,7 @@ public class ProjectController {
 
         if (!appUser.hasRole(Role.PROJECTMANAGER))
             throw new UnauthorizedException("Only Project Managers can create projects");
-        ProjectDTO created = projectService.createProject(createDTO);
+        ProjectDTO created = projectService.createProject(createDTO, appUser);
 
         TeamCreateDTO teamDto = new TeamCreateDTO(created.id(), teamName);
         TeamDTO createdTeam = teamService.createTeam(teamDto);
@@ -85,10 +85,9 @@ public class ProjectController {
         AppUser appUser = appUserService.getUserById(userId);
 
         if (!appUser.hasRole(Role.PROJECTMANAGER))
-            throw new UnauthorizedException("Only Project Managers can create projects");
+            throw new UnauthorizedException("Only Project Managers can delete projects");
 
-        ProjectDTO project = projectService.findById(projectId);
-        projectService.deleteProject(projectId);
-        return ResponseEntity.ok(project);
+        ProjectDTO deleted = projectService.deleteProject(projectId, userId);
+        return ResponseEntity.ok(deleted);
     }
 }

@@ -13,11 +13,15 @@ public class Project {
     String name;
     String description;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Team> teams = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private AppUser owner;
 
     public Long getId() {
         return id;
@@ -58,4 +62,8 @@ public class Project {
     public void removeTask(Task task) {
         tasks.remove(task);
     }
+
+    public AppUser getOwner() { return owner; }
+
+    public void setOwner(AppUser owner) { this.owner = owner; }
 }
