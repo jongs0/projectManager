@@ -5,6 +5,7 @@ import { currentUser } from "./stores/userStore.ts";
 import Login from "./pages/login.tsx";
 import Project from "./pages/Project.tsx";
 import Task from "./pages/Task.tsx";
+import Team from "./pages/Team.tsx";
 
 function Router() {
   
@@ -24,6 +25,7 @@ function Router() {
       <Route path="projects" element={<ProjectList />} />
       <Route path="projects/:projectId" element={<Project/>} />
       <Route path="projects/:projectId/task/:taskId" element={<Task/>} />
+      <Route path="teams/:teamId" element={<Team/>} />
       </Route>
     )}
     </Routes>

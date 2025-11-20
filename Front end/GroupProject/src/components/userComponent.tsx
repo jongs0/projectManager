@@ -1,13 +1,72 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router";
+import type { AppUserDTO, Role } from "../types/models.js";
+import { API_URL } from "../api/config.ts";
+import { currentUser } from "../stores/userStore.ts";
 
 
-const UserComponent = () => {
+const UserComponent = ({ userId, teamId }) => {
+
+
+    const siteUser = currentUser();
+    const queryClient = useQueryClient();
+
+    const changeRole = useMutation({
+        mutationFn: async (role: Role) => {
+            const res = await fetch(`${API_URL}/users/${userId}/role/${role}?senderId=${siteUser.id}`, {
+                method: "PATCH",
+            });
+            if (!res.ok) throw new Error("Update failed");
+            return res.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["user", userId]})
+        }
+    });
+
+
+    const removeUser = useMutation({
+        mutationFn: async (userId : number) => {
+            const res = await fetch(`${API_URL}/teams/${teamId}/delete/${userId}?pmId=${siteUser.id}`, {
+                method: "DELETE",
+            });
+            if (!res.ok) throw new Error("Update failed");
+            return res.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["teams", teamId]})
+        }
+    });
+
     const navigate = useNavigate();
 
     const [isOpened, openMenu] = useState(false);
-    // cursor: {isOpened ? "cursor" : ""},
+
+    const {
+        data: user,
+        isLoading,
+        error,
+    } = useQuery<AppUserDTO>({
+        queryKey: ["user", userId],
+        queryFn: async () => {
+            const response = await fetch(`${API_URL}/users/${userId}`);
+            if (!response.ok) {
+                throw new Error("Failed to fetch users");
+            }
+            return response.json();
+        },
+    });
+
+    if (isLoading) {
+        return <div>Loading user...</div>;
+    }
+
+    if (error) {
+        return <div style={{ color: "red" }}>Error: {error.message}</div>;
+    }
+
     return (
         <div style={{
             width: "268px",
@@ -24,7 +83,7 @@ const UserComponent = () => {
             onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(0, 0, 0, 1)"; openMenu(false) }}
             onClick={() => { openMenu(true) }}
         >
-            <strong style={{ display: "block", fontSize: "30px", textAlign: "center" }}>username</strong>
+            <strong style={{ display: "block", fontSize: "30px", textAlign: "center" }}>{user?.email}</strong>
             {isOpened && <div style={{
                 position: "absolute",
                 width: "268px",
@@ -40,44 +99,41 @@ const UserComponent = () => {
                 <strong style={{ display: "block", fontSize: "25px", textAlign: "center" }}>Edit</strong>
                 <p style={{ display: "block", fontSize: "20px", textAlign: "center", marginBottom: "0px" }}>Set to..</p>
 
-                {/* vv change true to user type detection */}
-                {true && <Button style={{
+                {(user?.role != "PROJECTMANAGER") && <Button style={{
                     width: "200px",
                     height: "40px",
                     lineHeight: "12px",
                     padding: "0px",
                     margin: "4px"
                 }}
-                    onClick={() => {/*set to admin here */ }}>
-                    Admin
+                    onClick={() => { changeRole.mutate("PROJECTMANAGER") }}>
+                    Proj. manager
                 </Button>}
 
-                {/* vv change false to user type detection */}
-                {false && <Button style={{
+                {(user?.role != "DEVELOPER") && <Button style={{
                     width: "200px",
                     height: "40px",
                     lineHeight: "12px",
                     padding: "0px",
                     margin: "4px"
                 }}
-                    onClick={() => {/*set to dev here */ }}>
+                    onClick={() => { changeRole.mutate("DEVELOPER") }}>
                     Developer
                 </Button>}
 
-                {/* vv change true to user type detection */}
-                {true && <Button style={{
+                {(user?.role != "CLIENT") && <Button style={{
                     width: "200px",
                     height: "40px",
                     lineHeight: "12px",
                     padding: "0px",
                     margin: "4px"
                 }}
-                    onClick={() => {/*set to viewer here */ }}>
+                    onClick={() => { changeRole.mutate("CLIENT") }}>
                     Viewer
                 </Button>}
 
-
-                <Button style={{ 
+                {user && (
+                <Button style={{
                     width: "80px",
                     height: "50px",
                     lineHeight: "20px",
@@ -86,9 +142,9 @@ const UserComponent = () => {
                     position: "absolute",
                     bottom: "0px"
                 }}
-                onClick={() => {/* delete user here */}}>
-                    Delete user
-                </Button>
+                    onClick={() => { removeUser.mutate(user.id) }}>
+                    Remove user
+                </Button>)}
 
             </div>}
 

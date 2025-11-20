@@ -5,8 +5,12 @@ import Dreamteam.GroupProject1.dto.appuser.AppUserCreateDTO;
 import Dreamteam.GroupProject1.dto.appuser.AppUserDTO;
 import Dreamteam.GroupProject1.dto.appuser.AppUserLoginDTO;
 import Dreamteam.GroupProject1.dto.project.ProjectDTO;
+import Dreamteam.GroupProject1.dto.task.TaskDTO;
+import Dreamteam.GroupProject1.dto.task.TaskUpdateDTO;
 import Dreamteam.GroupProject1.models.AppUser;
 import Dreamteam.GroupProject1.models.Project;
+import Dreamteam.GroupProject1.models.Task;
+import Dreamteam.GroupProject1.models.enums.Role;
 import Dreamteam.GroupProject1.repository.AppUserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +52,14 @@ public class AppUserService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
     }
 
+
+    public List<AppUserDTO> getAllUsers() {
+        return appUserRepository.findAll().
+                stream()
+                .map(AppUserDTO::fromEntity)
+                .toList();
+    }
+
     public AppUserDTO logUserIn(AppUserLoginDTO appUserLoginDTO) {
 
         String loginFailedMessage = "Login failed";
@@ -61,6 +73,18 @@ public class AppUserService {
             throw new UnauthorizedException(loginFailedMessage);
         }
     }
+
+    public AppUserDTO changeRole(Long id, Role role) {
+        AppUser user = appUserRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
+
+        user.setRole(role);
+
+        AppUser savedTask = appUserRepository.save(user);
+        return AppUserDTO.fromEntity(savedTask);
+    }
+
+
 }
 
 
