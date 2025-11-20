@@ -1,24 +1,72 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+import { currentUser } from "../../stores/userStore.ts";
+import { useParams } from "react-router";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import type { TaskDTO, TaskUpdateDTO } from "../../types/models.js";
+import { API_URL } from "../../api/config.ts";
 
 
 const TaskTitle = () => {
 
+    const user = currentUser();
+    const { taskId } = useParams();
 
-    const [titleText, setTitleText] = useState("Title"); // query
+    const { data: taskData, refetch } = useQuery<TaskDTO>({
+        queryKey: ["taskTitle", taskId],
+        queryFn: async () => {
+            const res = await fetch(`${API_URL}/tasks/${taskId}`);
+            if (!res.ok) throw new Error("Failed to load task");
+            return await res.json();
+        },
+        enabled: !!taskId
+    });
+
+    const [titleText, setTitleText] = useState("");
     const [isEditingTitle, setEditingTitle] = useState(false);
 
-    const handleTitleChange = (event: any) => {
+    useEffect(() => {
+        if (taskData) {
+            setTitleText(taskData.name);
+        }
+    }, [taskData]);
+
+    const isClient = user.role === "CLIENT";
+
+    const editTitle = useMutation({
+        mutationFn: async (dto: TaskUpdateDTO) => {
+            const res = await fetch(`${API_URL}/tasks/${taskId}?userId=${user.id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(dto),
+            });
+            if (!res.ok) throw new Error("Update failed");
+            return res.json();
+        },
+        onSuccess: () => {
+            refetch();
+            setEditingTitle(false);
+        }
+    });
+
+
+    const handleSubmit = (event: any) => {
         event.preventDefault();
-        //editTitle.mutate();
-        setEditingTitle(false);
+
+        if (!taskData) return;
+
+        editTitle.mutate({
+            name: titleText,
+            description: taskData.body
+        });
     };
 
+    if (!taskData) return <strong style={{ fontSize: "30px" }}>Loading...</strong>;
 
     return (
         <>
             {isEditingTitle ? (
-                <form onSubmit={handleTitleChange} style={{
+                <form onSubmit={handleSubmit} style={{
                     width: "100%",
                     display: "flex",
                     flexDirection: "column",
@@ -29,7 +77,7 @@ const TaskTitle = () => {
                         name="description"
                         value={titleText}
                         onChange={(e) => setTitleText(e.target.value)}
-                        disabled={false}
+                        disabled={isClient}
                         style={{
                             margin: "8px",
                             cursor: "text",
@@ -37,18 +85,24 @@ const TaskTitle = () => {
                             background: "rgba(30, 30, 30, 1)",
                         }}
                     />
-                    <Button type="submit" style={{
-                        width: "200px",
-                        height: "40px",
-                        lineHeight: "12px",
-                        padding: "0px",
+                    {titleText !== taskData.name && !isClient && (
+                        <Button type="submit" style={{
+                            width: "200px",
+                            height: "40px",
+                            lineHeight: "12px",
+                            padding: "0px",
+                        }}
+                            disabled={titleText == ""}>
+                            save
+                        </Button>
+                    )}
+                </form>
+            ) : (
+                <strong style={{ display: "block", fontSize: "30px", textAlign: "center", margin: "8px" }}
+                    onClick={() => {
+                        if (!isClient) setEditingTitle(true);
                     }}
-                        disabled={titleText == ""}>
-                        submit
-                    </Button>
-                </form>) :
-                (<strong style={{ display: "block", fontSize: "30px", textAlign: "center", margin: "8px" }}
-                    onClick={() => { setEditingTitle(true) }}>
+                >
                     {titleText}
                 </strong>)}
         </>
