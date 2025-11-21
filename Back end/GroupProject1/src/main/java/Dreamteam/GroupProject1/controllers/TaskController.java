@@ -1,6 +1,5 @@
 package Dreamteam.GroupProject1.controllers;
 
-import Dreamteam.GroupProject1.controllers.CommentController;
 import Dreamteam.GroupProject1.controllers.Exceptions.UnauthorizedException;
 import Dreamteam.GroupProject1.dto.task.*;
 import Dreamteam.GroupProject1.dto.task.TaskCreateDTO;
@@ -15,8 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @CrossOrigin("*")
 @RequestMapping("tasks")
@@ -29,15 +26,6 @@ public class TaskController {
         this.taskService = taskService;
         this.userService = userService;
     }
-
-
-//    @PostConstruct
-//    public void createDummyData() {
-//        taskService.createTask(new TaskCreateDTO("Task A", 30));
-//        taskService.createTask(new TaskCreateDTO("Task B", 30));
-//        taskService.createTask(new TaskCreateDTO("Task C", 30));
-//        taskService.createTask(new TaskCreateDTO("Task D", 30));
-//    }
 
     @PostMapping
     public ResponseEntity<TaskDTO> createTask(@Valid @RequestBody TaskCreateDTO createDto, @RequestParam Long userId) {
@@ -97,6 +85,19 @@ public class TaskController {
             throw new UnauthorizedException("Only Project Managers and Developers can remove watching users.");
 
         TaskDTO updated = taskService.removeWatchingUser(taskId, userId);
+        return ResponseEntity.ok(updated);
+    }
+
+    @PutMapping("/{taskId}/toggleDone")
+    public ResponseEntity<TaskDTO> toggleDone(@PathVariable Long taskId,
+                                              @RequestParam Long userId) {
+
+        AppUser appUser = userService.getUserById(userId);
+
+        if (appUser.hasRole(Role.CLIENT))
+            throw new UnauthorizedException("Only Project Managers and Developers can move tasks.");
+
+        TaskDTO updated = taskService.toggleDone(taskId);
         return ResponseEntity.ok(updated);
     }
 

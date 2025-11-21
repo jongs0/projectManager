@@ -38,7 +38,7 @@ public class CommentController {
         if (appUser.hasRole(Role.CLIENT))
             throw new UnauthorizedException("Only Project Managers and Developers can create comments.");
 
-        CommentDTO created = commentService.createComment(createDTO);
+        CommentDTO created = commentService.createComment(createDTO, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 

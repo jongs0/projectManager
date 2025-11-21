@@ -1,19 +1,68 @@
-import { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+import type { TaskDTO, TaskUpdateDTO } from "../../types/models.js";
+import { currentUser } from "../../stores/userStore.ts";
+import { API_URL } from "../../api/config.ts";
+import { useParams } from "react-router";
 
 
 const TaskDescription = () => {
-    const [savedDesc, setSavedDesc] = useState("description"); // zet hier de desc in met een query pull
-    const [descText, setDescText] = useState(savedDesc);
 
-    const handleDescChange = (event: any) => {
-        event.preventDefault();
-        //editDesc.mutate();
-        setSavedDesc(descText);
+    const user = currentUser();
+    const { taskId } = useParams();
+    const queryClient = useQueryClient();
+
+    const { data: taskData } = useQuery<TaskDTO>({
+    queryKey: ["taskPage", taskId],
+    queryFn: async () => {
+        const res = await fetch(`${API_URL}/tasks/${taskId}`);
+        if (!res.ok) throw new Error("Failed to load task");
+        return await res.json();
+    },
+    enabled: !!taskId,
+});
+    
+    const [descText, setDescText] = useState("");
+
+    useEffect(() => {
+        if (taskData) {
+            setDescText(taskData.body);
+        }
+    }, [taskData]);
+
+    const isClient = user.role === "CLIENT";
+
+      const editDesc = useMutation({
+        mutationFn: async (dto: TaskUpdateDTO) => {
+            const res = await fetch(`${API_URL}/tasks/${taskId}?userId=${user.id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(dto),
+            });
+            if (!res.ok) throw new Error("Update failed.");
+            return res.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["taskPage", taskId] });
+        },
+        
+        onError: () => {
+            console.log("Description creation failed: unable to place description.");
+        },
+    });
+
+    const handleSave = (e: any) => {
+        e.preventDefault();
+
+        editDesc.mutate({
+            name: taskData?.name ?? "",
+            description: descText
+        });
     };
 
     return (
-        <form onSubmit={handleDescChange} style={{
+        <form onSubmit={handleSave} style={{
             width: "100%",
             display: "flex",
             flexDirection: "column",
@@ -30,7 +79,8 @@ const TaskDescription = () => {
                     name="title"
                     value={descText}
                     onChange={(e) => setDescText(e.target.value)}
-                    disabled={false}
+                    disabled={isClient}
+                    placeholder="Description"
                     style={{
                         width: "90%",
                         height: "200px",
@@ -42,12 +92,15 @@ const TaskDescription = () => {
                         resize: "none"
                     }}
                 />
-            </div>
-            {(savedDesc != descText && (<Button type="submit" style={{
+
+                {!isClient && taskData && taskData.body !== descText && (
+                <Button type="submit" style={{
                 width: "200px",
                 flexDirection: "column",
                 alignItems: "center"
-            }}>submit</Button>))}
+                }}>submit</Button>
+            )}
+            </div>
         </form>
     )
 }

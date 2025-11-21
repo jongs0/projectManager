@@ -27,17 +27,15 @@ public class CommentService {
         this.userRepository = userRepository;
     }
 
-    public CommentDTO createComment(CommentCreateDTO createDTO) {
+    public CommentDTO createComment(CommentCreateDTO createDTO, Long userId) {
         Comment comment = createDTO.toEntity();
 
-        Long userId = createDTO.userId();
         AppUser user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("There's no user with ID " + userId));
         comment.setUser(user);
 
-        Long taskId = createDTO.taskId();
-        Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new EntityNotFoundException("There's no post with ID " + taskId));
+        Task task = taskRepository.findById(createDTO.taskId())
+                .orElseThrow(() -> new EntityNotFoundException("There's no post with ID " + createDTO.taskId()));
         comment.setTask(task);
 
         Comment savedComment = commentRepository.save(comment);

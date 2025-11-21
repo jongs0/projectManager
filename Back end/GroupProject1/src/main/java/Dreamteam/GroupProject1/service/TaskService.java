@@ -1,7 +1,5 @@
 package Dreamteam.GroupProject1.service;
 
-import Dreamteam.GroupProject1.dto.project.ProjectCreateDTO;
-import Dreamteam.GroupProject1.dto.project.ProjectDTO;
 import Dreamteam.GroupProject1.dto.task.TaskCreateDTO;
 import Dreamteam.GroupProject1.dto.task.TaskDTO;
 import Dreamteam.GroupProject1.dto.task.TaskUpdateDTO;
@@ -12,11 +10,9 @@ import Dreamteam.GroupProject1.repository.AppUserRepository;
 import Dreamteam.GroupProject1.repository.ProjectRepository;
 import Dreamteam.GroupProject1.repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.handler.UserRoleAuthorizationInterceptor;
-
-import java.util.List;
 
 @Service
 public class TaskService {
@@ -49,11 +45,16 @@ public class TaskService {
         return TaskDTO.fromEntity(Task);
     }
 
-    public List<TaskDTO> findAll() {
-        return taskRepository.findAll()
-                .stream()
-                .map(TaskDTO::fromEntity)
-                .toList();
+
+    @Transactional
+    public TaskDTO toggleDone(Long taskId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found"));
+
+        task.setDone(!task.isDone());
+        taskRepository.save(task);
+
+        return TaskDTO.fromEntity(task);
     }
 
     public TaskDTO updateTask(Long id, TaskUpdateDTO updateDTO) {

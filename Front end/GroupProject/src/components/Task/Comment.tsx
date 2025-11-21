@@ -53,7 +53,10 @@ const CommentComponent = ({ commentAuthor, body, commentId, authorId }) => {
             borderRadius: "10px",
             margin: "6px",
             cursor: "pointer",
-            position: "relative"
+            position: "relative",
+            padding: "12px",
+            boxSizing: "border-box"
+
         }}
             onMouseOver={(e) => {
                  e.currentTarget.style.background = "rgba(19, 19, 19, 1)";
@@ -84,7 +87,11 @@ const CommentComponent = ({ commentAuthor, body, commentId, authorId }) => {
                     top: "6px",
                     right: "6px",
                     height: "12px",
-                    lineHeight: "12px"
+                    lineHeight: "12px",
+                    display: "flex", 
+                    justifyContent: "center", 
+                    alignItems: "center",
+                    
                 }}
                     onClick={() => editComment()}
                 >

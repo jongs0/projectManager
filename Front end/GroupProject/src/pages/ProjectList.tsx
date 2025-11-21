@@ -1,14 +1,34 @@
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import type { ProjectDTO } from "../types/models.js";
 import { API_URL } from "../api/config.ts";
 import { currentUser } from "../stores/userStore.ts";
-import { Button } from "react-bootstrap";
 import NewProjectButton from "../components/NewProjectButton.tsx";
 
 
 const ProjectList = () => {
+    const siteUser = currentUser();
+    const queryClient = useQueryClient();
+
+    const projectUrl = siteUser.role === "PROJECTMANAGER"
+        ? `${API_URL}/myProjects/owned?userId=${siteUser.id}`
+        : `${API_URL}/myProjects?userId=${siteUser.id}`;
+
+    const deleteProject = useMutation({
+        mutationFn: async (projectID: number) => {
+            const res = await fetch(`${API_URL}/myProjects/${projectID}?userId=${siteUser.id}`, {
+                method: "DELETE"
+            });
+            if (!res.ok) throw new Error("Deletion failed");
+            return res.json();
+        },
+        onSuccess: (project) => {
+            queryClient.invalidateQueries({ queryKey: ["projects", project.id] })
+        },
+        onError: () => {
+            console.log("No perms(?)");
+        },
+    });
 
     const navigate = useNavigate();
 
@@ -19,10 +39,10 @@ const ProjectList = () => {
         isLoading,
         error,
     } = useQuery<ProjectDTO[]>({
-        queryKey: ["projects", userLogin?.id],
-        enabled: !!userLogin?.id,
+        queryKey: ["projects", siteUser.id, siteUser.role],
+        enabled: !!siteUser.id,
         queryFn: async () => {
-            const response = await fetch(`${API_URL}/myProjects?userId=${userLogin.id}`);
+            const response = await fetch(projectUrl);
             if (!response.ok) {
                 throw new Error("Failed to fetch projects");
             }
@@ -37,10 +57,18 @@ const ProjectList = () => {
     if (error) {
         return <div style={{ color: "red" }}>Error: {error.message}</div>;
     }
-
+        
     return (
         <div>
             <h2 style={{ padding: "16px" }}>My Projects</h2>
+            
+
+            {projects && projects.length > 0 && (
+                <div style={{ paddingLeft: "16px", marginBottom: "16px" }}>
+                    <NewProjectButton />
+                </div>
+            )}
+
             <div style={{ padding: "16px", display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
                 {projects && projects.length > 0 ? projects.map((project) => (
                     <div key={project.id}
@@ -55,7 +83,8 @@ const ProjectList = () => {
                             justifyContent: "center",
                             marginRight: "16px",
                             flexDirection: "column",
-                            overflow: "hidden"
+                            overflow: "hidden",
+                            position: "relative"
                         }}
                         onMouseOver={(e) => {
                             e.currentTarget.style.background = "rgba(0, 0, 0, 1)";
@@ -77,14 +106,39 @@ const ProjectList = () => {
                                 background: "rgba(235, 87, 104, 1)",
                             }}
                         />
+                        {siteUser.role == "PROJECTMANAGER" && (
+                            <div style={{
+                                position: "absolute",
+                                background: "black",
+                                height: "40px",
+                                width: "40px",
+                                top: 0,
+                                right: 0,
+                                borderRadius: "10px",
+                                textAlign: "center"
+                            }}
+                                onMouseOver={(e) => {
+                                    e.currentTarget.style.background = "rgba(179, 37, 49, 1)";
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.background = "rgba(0, 0, 0, 0)";
+                                }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    deleteProject.mutate(project.id);
+                                }}>
+                                x
+                            </div>
+                        )}
                     </div>
+
                 )) : (
                     <div style={{ marginTop: "-40px" }}>
                         <p>No projects available</p>
-                        <NewProjectButton/>
+                        <NewProjectButton />
                     </div>
                 )}
-                <NewProjectButton/>
+
             </div>
         </div >
 

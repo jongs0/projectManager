@@ -2,6 +2,7 @@ package Dreamteam.GroupProject1.controllers;
 
 import Dreamteam.GroupProject1.controllers.Exceptions.UnauthorizedException;
 
+import Dreamteam.GroupProject1.dto.task.TaskDTO;
 import Dreamteam.GroupProject1.dto.team.TeamCreateDTO;
 import Dreamteam.GroupProject1.dto.team.TeamDTO;
 import Dreamteam.GroupProject1.dto.team.TeamUpdateDTO;
@@ -27,6 +28,12 @@ public class TeamController {
     public TeamController(TeamService teamService, AppUserService appUserService) {
         this.teamService = teamService;
         this.appUserService = appUserService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TeamDTO> getTeam(@PathVariable Long id) {
+        TeamDTO team = teamService.findById(id);
+        return ResponseEntity.ok(team);
     }
 
     @PostMapping

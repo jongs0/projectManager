@@ -11,11 +11,11 @@ export default function NewProjectPopup({ closeFunction }) {
 
     const siteUser = currentUser();
     const queryClient = useQueryClient();
-    //const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const createProject = useMutation({
         mutationFn: async (projectDTO: ProjectCreateDTO) => {
-            const res = await fetch(`${API_URL}/myProjects?userId=${siteUser.id}&teamName=${teamName}`, {
+            const res = await fetch(`${API_URL}/myProjects?userId=${siteUser.id}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(projectDTO),
@@ -26,7 +26,7 @@ export default function NewProjectPopup({ closeFunction }) {
         onSuccess: (project) => {
             queryClient.invalidateQueries({ queryKey: ["projects", siteUser.id] })
             closeFunction();
-            //navigate("/projects/" + project.id);
+            navigate("/projects/" + project.id);
         },
         onError: () => {
             console.log("No perms(?)");
@@ -37,8 +37,6 @@ export default function NewProjectPopup({ closeFunction }) {
         name: "",
         description: "",
     });
-
-    const [teamName, setTeamName] = useState("");
 
     const submitProject = (event: any) => {
         event.preventDefault();
@@ -60,16 +58,19 @@ export default function NewProjectPopup({ closeFunction }) {
         }}
             onClick={closeFunction}>
             <div style={{
-                width: "1000px",
-                height: "700px",
+                width: "700px",
+                height: "500px",
                 background: "black",
                 border: "2px solid white",
-                borderRadius: "10px",
-                boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+                borderRadius: "14px",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
                 display: "flex",
+                flexDirection: "column",
                 alignItems: "center",
-                justifyContent: "center",
+                paddingTop: "20px"
             }} onClick={e => e.stopPropagation()}>
+
+                <h2 style={{ marginBottom: "10px" }}>Create Your Project</h2>
 
 
                 <form onSubmit={submitProject} style={{
@@ -81,12 +82,12 @@ export default function NewProjectPopup({ closeFunction }) {
                     <div style={{
                         width: "90%",
                         display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
                         margin: "8px",
-                    justifyContent: "center"
+                        justifyContent: "center"
                     }}>
-                        <strong>Name:</strong>
+                        <strong style={{ marginBottom: "6px" }}>Name:</strong>
                         <textarea
                             id="title"
                             name="title"
@@ -110,12 +111,12 @@ export default function NewProjectPopup({ closeFunction }) {
                     <div style={{
                         width: "90%",
                         display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
                         margin: "8px",
-                    justifyContent: "center"
+                        justifyContent: "center"
                     }}>
-                        <strong>Description:</strong>
+                        <strong style={{ marginBottom: "6px" }}>Description:</strong>
                         <textarea
                             id="description"
                             name="description"
@@ -135,47 +136,39 @@ export default function NewProjectPopup({ closeFunction }) {
                         />
                     </div>
 
-
                     <div style={{
-                        width: "70%",
                         display: "flex",
                         flexDirection: "row",
-                        alignItems: "center",
-                        margin: "8px",
-                    justifyContent: "center"
-                    }}>
-                        <p>Team name:</p>
-                        <textarea
-                            id="title"
-                            name="title"
-                            value={teamName}
-                            onChange={(e) => setTeamName(e.target.value)}
-                            disabled={false}
-                            style={{
-                                width: "60%",
-                                height: "60px",
-                                background: "rgba(30, 30, 30, 1)",
-                                border: "2px solid white",
-                                borderRadius: "10px",
-                                margin: "8px",
-                                cursor: "text",
-                                resize: "none"
-                            }}
-
-                        />
-                    </div>
-
-
-                    <Button type="submit" style={{
-                        width: "200px",
-                        height: "40px",
-                        lineHeight: "12px",
-                        padding: "0px",
+                        justifyContent: "center",
+                        gap: "20px",
                         marginTop: "20px"
-                    }}
-                        disabled={(projectInfo.name == "" || projectInfo.description == "")}>
-                        Create project
-                    </Button>
+                    }}>
+                        <Button
+                            variant="secondary"
+                            style={{
+                                width: "150px",
+                                height: "40px",
+                                lineHeight: "12px",
+                                padding: "0px",
+                            }}
+                            onClick={closeFunction}
+                        >
+                            Back
+                        </Button>
+
+                        <Button
+                            type="submit"
+                            style={{
+                                width: "150px",
+                                height: "40px",
+                                lineHeight: "12px",
+                                padding: "0px",
+                            }}
+                            disabled={(projectInfo.name === "" || projectInfo.description === "")}
+                        >
+                            Create Project
+                        </Button>
+                    </div>
                 </form>
 
 

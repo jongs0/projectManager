@@ -1,6 +1,7 @@
 package Dreamteam.GroupProject1.dto.project;
 
 import Dreamteam.GroupProject1.dto.task.TaskSummaryDTO;
+import Dreamteam.GroupProject1.dto.team.TeamDTO;
 import Dreamteam.GroupProject1.dto.team.TeamSummaryDTO;
 import Dreamteam.GroupProject1.models.Project;
 import Dreamteam.GroupProject1.models.Task;
@@ -13,7 +14,7 @@ public record ProjectDTO(
         String name,
         String description,
         List<TaskSummaryDTO> tasks,
-        List<TeamSummaryDTO> teams
+        List<TeamDTO> teams
 ) {
 
     public static ProjectDTO fromEntity(Project project) {
@@ -24,10 +25,10 @@ public record ProjectDTO(
                 .map(TaskSummaryDTO::fromEntity)
                 .toList();
 
-        List<TeamSummaryDTO> teamDtos = project.getTeams() == null ? List.of()
+        List<TeamDTO> teamDtos = project.getTeams() == null ? List.of()
                 : project.getTeams()
                 .stream()
-                .map(TeamSummaryDTO::fromEntity)
+                .map(TeamDTO::fromEntity)
                 .toList();
 
         return new ProjectDTO(

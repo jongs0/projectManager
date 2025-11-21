@@ -3,8 +3,14 @@ import { Button } from "react-bootstrap";
 import CommentComponent from "./Comment.tsx";
 
 
-const TaskCommentList = ({ comments }) => {
+import type { CommentSummaryDTO } from "../../types/models.js";
 
+interface TaskCommentListProps {
+    comments: CommentSummaryDTO[];
+}
+
+const TaskCommentList = ({ comments }: TaskCommentListProps) => {
+    
     return (
         <div style={{
             flex: 1,
@@ -12,21 +18,34 @@ const TaskCommentList = ({ comments }) => {
             overflowY: "scroll",
             display: "flex",
             flexDirection: "column",
-            alignItems: "center"
+            alignItems: "center",
+            padding: "0 20px"
         }}>
-            {comments && comments.length > 0 ? (
-                comments.map((c: any) => (
-                    <CommentComponent
+        {comments && comments.length > 0 ? (
+            comments.map((c) => (
+                
+                <div
                         key={c.id}
-                        commentId={c.id}
-                        body={c.body}
-                        commentAuthor={c.appUserDto.email}
-                        authorId={c.appUserDto.id}
-                    />
-                ))
-            ) : (
-                <p style={{ color: "gray", marginTop: "16px" }}>No comments yet.</p>
-            )}
+                        style={{
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "center",
+                            marginBottom: "12px"
+                        }}
+                    >
+                        <div style={{ width: "90%" }}>
+                            <CommentComponent
+                                commentId={c.id}
+                                body={c.body}
+                                commentAuthor={c.appUserDto.email}
+                                authorId={c.appUserDto.id}
+                            />
+                        </div>
+                    </div>
+            ))
+        ) : (
+            <p style={{ color: "gray", marginTop: "16px" }}>No comments yet.</p>
+        )}
         </div>
     )
 }
