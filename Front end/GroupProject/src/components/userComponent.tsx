@@ -81,7 +81,7 @@ const UserComponent = ({ userId, teamId }) => {
         }}
             onMouseOver={(e) => { e.currentTarget.style.background = "rgba(19, 19, 19, 1)" }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(0, 0, 0, 1)"; openMenu(false) }}
-            onClick={() => { openMenu(true) }}
+            onClick={() => { if (user?.id != siteUser.id) openMenu(true) }}
         >
             <strong style={{ display: "block", fontSize: "30px", textAlign: "center" }}>{user?.email}</strong>
             {isOpened && <div style={{

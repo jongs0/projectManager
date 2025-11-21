@@ -37,8 +37,8 @@ export default function AddUserPopup({ closeFunction, team }) {
             return res.json();
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["users"]});
-            queryClient.invalidateQueries({ queryKey: ["teams", team.id]})
+            queryClient.invalidateQueries({ queryKey: ["users"] });
+            queryClient.invalidateQueries({ queryKey: ["teams", team.id] })
             closeFunction();
         },
         onError: () => {
@@ -72,26 +72,24 @@ export default function AddUserPopup({ closeFunction, team }) {
                 flexDirection: "column",
             }} onClick={e => e.stopPropagation()}>
                 {(users && users.length > 0) && users.map((user) => (
-                    <>
-                        <div key={user.id}
-                            style={{
-                                width: "90%",
-                                height: "60px",
-                                background: "black",
-                                border: "2px solid white",
-                                borderRadius: "10px",
-                                margin: "16px",
-                                cursor: "pointer",
-                                display: "flex",
-                                flexDirection: "row",
-                                overflowY: "scroll",
-                            }}
-                            onMouseOver={(e) => { e.currentTarget.style.background = "rgba(19, 19, 19, 1)" }}
-                            onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(0, 0, 0, 1)" }}
-                            onClick={() => {addUser.mutate(user.id)} }>
-                            <p>{user.email}</p>
-                        </div>
-                    </>))}
+                    <div key={user.id}
+                        style={{
+                            width: "90%",
+                            height: "60px",
+                            background: "black",
+                            border: "2px solid white",
+                            borderRadius: "10px",
+                            margin: "8px",
+                            cursor: "pointer",
+                            display: "flex",
+                            flexDirection: "row",
+                            overflowY: "scroll",
+                        }}
+                        onMouseOver={(e) => { e.currentTarget.style.background = "rgba(19, 19, 19, 1)" }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(0, 0, 0, 1)" }}
+                        onClick={() => { addUser.mutate(user.id) }}>
+                        <p>{user.email}</p>
+                    </div>))}
 
 
             </div>

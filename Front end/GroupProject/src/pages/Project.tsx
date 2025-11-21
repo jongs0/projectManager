@@ -6,6 +6,7 @@ import type { ProjectDTO } from "../types/models.js";
 import TaskComponent from "../components/TaskComponent.tsx";
 import TeamComponent from "../components/TeamComponent.tsx";
 import { useParams } from "react-router";
+import NewTeamButton from "../components/NewTeamButton.tsx";
 
 const Project = () => {
     const { projectId } = useParams<{ projectId: string }>();
@@ -37,20 +38,10 @@ const Project = () => {
             
             {/* TEAMS COLUMN */}
             <div style={{ margin: "16px" }}>
-                <strong
-                    style={{
-                        display: "block",
-                        fontSize: "30px",
-                        textAlign: "center"
-                    }}
-                >
-                    Teams
-                </strong>
-
                 <div
                     style={{
                         flex: 1,
-                        height: "calc(100vh - 160px)",
+                        height: "calc(100vh - 120px)",
                         width: "300px",
                         background: "black",
                         border: "2px solid white",
@@ -60,6 +51,17 @@ const Project = () => {
                         overflowX: "hidden"
                     }}
                 >
+                    <strong
+                    style={{
+                        display: "block",
+                        fontSize: "30px",
+                        textAlign: "center"
+                    }}
+                >
+                    Teams
+                </strong>
+
+
                     {project && project.teams.length > 0 ? (
                         project.teams.map((team) => (
                             <TeamComponent
@@ -73,6 +75,8 @@ const Project = () => {
                             No teams assigned
                         </p>
                     )}
+
+                    <NewTeamButton projectID={project?.id}/>
                 </div>
             </div>
 

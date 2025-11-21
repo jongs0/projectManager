@@ -1,9 +1,9 @@
 import { Button } from "react-bootstrap";
 import { currentUser } from "../stores/userStore.ts";
 import { useState } from "react";
-import NewProjectPopup from "./NewProjectPopup.tsx";
+import NewTeamPopup from "./NewTeamPopup.tsx";
 
-const NewProjectButton = () => {
+const NewTeamButton = ({ projectID }) => {
     const user = currentUser();
 
     const [isOpened, openMenu] = useState(false);
@@ -12,8 +12,8 @@ const NewProjectButton = () => {
         <>
             <div
                 style={{
-                    height: "250px",
-                    width: "400px",
+                    width: "268px",
+                    height: "60px",
                     border: "2px dashed white",
                     borderRadius: "10px",
                     background: "rgba(0,0,0,0.4)",
@@ -21,20 +21,21 @@ const NewProjectButton = () => {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
+                    margin: "16px",
                     cursor: "pointer"
                 }}
                 onMouseOver={(e) => { e.currentTarget.style.background = "rgba(19, 19, 19, 1)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(0, 0, 0, 1)"; }}
                 onClick={() => { openMenu(true) }}
             >
-                Create project..
+                + Create team
             </div>
 
 
-            {isOpened && <NewProjectPopup closeFunction={() => openMenu(false)} />}
+            {isOpened && <NewTeamPopup projectID={projectID} closeFunction={() => openMenu(false)} />}
         </>
     )
 
 }
 
-export default NewProjectButton
+export default NewTeamButton

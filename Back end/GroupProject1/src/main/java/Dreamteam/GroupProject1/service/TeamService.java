@@ -79,7 +79,10 @@ public class TeamService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + userId));
 
         team.removeTeamMember(appUser);
+        appUser.getTeams().remove(team);
+
         Team savedTeam = teamRepository.save(team);
+        appUserRepository.save(appUser);
         return TeamDTO.fromEntity(savedTeam);
     }
 
