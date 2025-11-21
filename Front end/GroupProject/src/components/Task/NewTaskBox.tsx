@@ -17,7 +17,7 @@ const NewTaskBox = ({ projectId, refreshTasks }: NewTaskBoxProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [taskName, setTaskName] = useState("");
 
-     const createTask = useMutation({
+    const createTask = useMutation({
         mutationFn: async (dto: TaskCreateDTO) => {
             const res = await fetch(`${API_URL}/tasks?userId=${user.id}`, {
                 method: "POST",
@@ -35,7 +35,7 @@ const NewTaskBox = ({ projectId, refreshTasks }: NewTaskBoxProps) => {
             refreshTasks();
         }
     });
-    
+
     if (!isOpen) {
         return (
             <div
@@ -53,12 +53,14 @@ const NewTaskBox = ({ projectId, refreshTasks }: NewTaskBoxProps) => {
                     alignItems: "center",
                     cursor: "pointer"
                 }}
+                onMouseOver={(e) => { e.currentTarget.style.background = "rgba(19, 19, 19, 1)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(0, 0, 0, 1)"; }}
             >
                 + Add Task
             </div>
         );
     }
-     return (
+    return (
         <form
             onSubmit={(e) => {
                 e.preventDefault();
@@ -66,7 +68,7 @@ const NewTaskBox = ({ projectId, refreshTasks }: NewTaskBoxProps) => {
                 createTask.mutate({
                     projectId: projectId,
                     name: taskName,
-                    description: "" 
+                    description: ""
                 });
             }}
             style={{
@@ -90,7 +92,8 @@ const NewTaskBox = ({ projectId, refreshTasks }: NewTaskBoxProps) => {
                     background: "rgba(30,30,30,1)",
                     border: "1px solid gray",
                     color: "white",
-                    borderRadius: "6px"
+                    borderRadius: "6px",
+                    margin: "0px"
                 }}
             />
 
@@ -102,7 +105,8 @@ const NewTaskBox = ({ projectId, refreshTasks }: NewTaskBoxProps) => {
                     borderRadius: "6px",
                     background: "#1d75ff",
                     color: "white",
-                    cursor: "pointer"
+                    cursor: "pointer",
+                    margin: "0px"
                 }}
             >
                 Create
@@ -116,7 +120,8 @@ const NewTaskBox = ({ projectId, refreshTasks }: NewTaskBoxProps) => {
                     borderRadius: "6px",
                     background: "gray",
                     color: "white",
-                    cursor: "pointer"
+                    cursor: "pointer",
+                    margin: "0px"
                 }}
             >
                 Cancel

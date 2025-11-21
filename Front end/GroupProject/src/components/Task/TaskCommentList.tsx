@@ -10,7 +10,7 @@ interface TaskCommentListProps {
 }
 
 const TaskCommentList = ({ comments }: TaskCommentListProps) => {
-    
+
     return (
         <div style={{
             flex: 1,
@@ -21,10 +21,9 @@ const TaskCommentList = ({ comments }: TaskCommentListProps) => {
             alignItems: "center",
             padding: "0 20px"
         }}>
-        {comments && comments.length > 0 ? (
-            comments.map((c) => (
-                
-                <div
+            {comments && comments.length > 0 ? (
+                comments.map((c) => (
+                    <div
                         key={c.id}
                         style={{
                             width: "100%",
@@ -33,19 +32,17 @@ const TaskCommentList = ({ comments }: TaskCommentListProps) => {
                             marginBottom: "12px"
                         }}
                     >
-                        <div style={{ width: "90%" }}>
-                            <CommentComponent
-                                commentId={c.id}
-                                body={c.body}
-                                commentAuthor={c.appUserDto.email}
-                                authorId={c.appUserDto.id}
-                            />
-                        </div>
+                        <CommentComponent
+                            commentId={c.id}
+                            body={c.body}
+                            commentAuthor={c.appUserDto.email}
+                            authorId={c.appUserDto.id}
+                        />
                     </div>
-            ))
-        ) : (
-            <p style={{ color: "gray", marginTop: "16px" }}>No comments yet.</p>
-        )}
+                ))
+            ) : (
+                <p style={{ color: "gray" }}>No comments yet.</p>
+            )}
         </div>
     )
 }

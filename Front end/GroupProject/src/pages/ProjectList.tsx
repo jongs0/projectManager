@@ -23,7 +23,7 @@ const ProjectList = () => {
             return res.json();
         },
         onSuccess: (project) => {
-            queryClient.invalidateQueries({ queryKey: ["projects", project.id] })
+            queryClient.invalidateQueries({ queryKey: ["projects"] })
         },
         onError: () => {
             console.log("No perms(?)");
@@ -57,17 +57,12 @@ const ProjectList = () => {
     if (error) {
         return <div style={{ color: "red" }}>Error: {error.message}</div>;
     }
-        
+
     return (
         <div>
             <h2 style={{ padding: "16px" }}>My Projects</h2>
-            
 
-            {projects && projects.length > 0 && (
-                <div style={{ paddingLeft: "16px", marginBottom: "16px" }}>
-                    <NewProjectButton />
-                </div>
-            )}
+
 
             <div style={{ padding: "16px", display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
                 {projects && projects.length > 0 ? projects.map((project) => (
@@ -104,8 +99,12 @@ const ProjectList = () => {
                             style={{
                                 flex: 1,
                                 background: "rgba(235, 87, 104, 1)",
+                                display: "flex",
+                                justifyContent: "center"
                             }}
-                        />
+                        >
+                            <p style={{alignContent: "center"}}>{project.description}</p>
+                        </div>
                         {siteUser.role == "PROJECTMANAGER" && (
                             <div style={{
                                 position: "absolute",
@@ -138,7 +137,11 @@ const ProjectList = () => {
                         <NewProjectButton />
                     </div>
                 )}
-
+                {projects && projects.length > 0 && (
+                    <div style={{ paddingLeft: "60px", marginBottom: "16px", alignSelf:"center" }}>
+                        <NewProjectButton />
+                    </div>
+                )}
             </div>
         </div >
 
