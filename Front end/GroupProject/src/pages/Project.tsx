@@ -38,7 +38,10 @@ const Project = () => {
     }
     
     return (
-        <div style={{ flex: 1, display: "flex", }}>
+        <div style={{
+            marginLeft: "0px",
+            margin: "16px"
+        }}>
         <div style={{
             width: "300px",
             background: "black",
@@ -46,18 +49,37 @@ const Project = () => {
             borderRadius: "10px",
             margin: "16px",
         }}>
-        <strong style={{ display: "block", fontSize: "30px", textAlign: "center" }}>Teams</strong>
+        <strong style={{
+            display: "block",
+            fontSize: "25px",
+            textAlign: "center"
+        }}>
+        Teams
+        </strong>
         <div style={{
             flex: 1,
             height: "calc(100vh - 160px)",
             width: "300px",
+            background: "black",
+            border: "2px solid white",
+            borderRadius: "10px",
             marginTop: "8px",
             overflowY: "scroll",
             overflowX: "hidden"
         }}>
-        <TeamComponent />
-        <TeamComponent />
-        <TeamComponent />
+        {project && project.teams.length > 0 ? (
+            project.teams.map((team) => (
+                <TeamComponent
+                key={team.id}
+                teamId={team.id}
+                teamName={team.name}
+                />
+            ))
+        ) : (
+            <p style={{ padding: "8px", textAlign: "center" }}>
+            No teams assigned
+            </p>
+        )}
         </div>
         </div>
         
