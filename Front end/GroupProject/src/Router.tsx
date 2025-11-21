@@ -26,6 +26,7 @@ function Router() {
       <Route path="projects/:projectId" element={<Project/>} />
       <Route path="projects/:projectId/task/:taskId" element={<Task/>} />
       <Route path="teams/:teamId" element={<Team/>} />
+      <Route path="projects/:projectId/team/:teamId" element={<Team />} />
       </Route>
     )}
     </Routes>

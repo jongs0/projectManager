@@ -47,15 +47,21 @@ const RegisterComponent = () => {
     })
     
     return (
+        
+        <div>
+    
+
+
         <div style={{ display:"flex", flexDirection:"column", gap:"10px" }}>
         
+        <p>Email:</p>
         <input 
         type="text"
         value={register.email}
         onChange={(e) => setRegister({ ...register, email: e.target.value})}
         placeholder="Enter email"
         />
-        
+        <p>Password</p>
         <input 
         type="password"
         value={register.tempPassword}
@@ -63,6 +69,7 @@ const RegisterComponent = () => {
         placeholder="Enter password"
         />
         
+        <p>Verify password</p>
         <input 
         type="password"
         value={register.verifiedPassword}
@@ -70,6 +77,7 @@ const RegisterComponent = () => {
         placeholder="Verify password"
         />
         
+        <p>Select your role</p>
         <Form.Select aria-label="Select your role"
         value={register.role}
         onChange={(e) => setRegister({ ...register, role: e.target.value as Role })}
@@ -104,6 +112,7 @@ const RegisterComponent = () => {
         {handleRegistration.isPending ? "Registering..." : "Register"}
         </button>
 
+        </div>
         </div>
     );
 };
