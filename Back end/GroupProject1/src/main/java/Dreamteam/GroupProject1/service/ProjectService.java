@@ -47,6 +47,13 @@ public class ProjectService {
                 .toList();
     }
 
+    public List<ProjectDTO> getMyOwnedProjects(Long userId) {
+        return projectRepository.findByOwnerId(userId)
+                .stream()
+                .map(ProjectDTO::fromEntity)
+                .toList();
+    }
+
     public List<ProjectDTO> findAll() {
         return projectRepository.findAll()
                 .stream()

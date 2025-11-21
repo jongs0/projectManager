@@ -18,5 +18,12 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     WHERE m.id = :userId
     OR p.owner.id = :userId
 """)
-    List<Project> findAllByUserId(Long userId);
+    List<Project> findAllByUserId(Long ownerId);
+
+    @Query("""
+SELECT p
+FROM Project p
+WHERE p.owner.id = :ownerId
+""")
+    List<Project> findByOwnerId(Long ownerId);
 }

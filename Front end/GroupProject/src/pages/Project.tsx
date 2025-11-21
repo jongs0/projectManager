@@ -21,7 +21,7 @@ const Project = () => {
     } = useQuery<ProjectDTO>({
         queryKey: ["projects", projectId],
         queryFn: async () => {
-            const response = await fetch(`${API_URL}/myProjects/${projectId}?userId=${userLogin.id}`);
+            const response = await fetch(`${API_URL}/myProjects/id/${projectId}?userId=${userLogin.id}`);
             if (!response.ok) {
                 throw new Error("Failed to fetch project");
             }

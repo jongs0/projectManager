@@ -61,7 +61,13 @@ public class ProjectController {
         return ResponseEntity.ok(myProjects);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/owned")
+    public ResponseEntity<List<ProjectDTO>> getMyOwnedProjects(@RequestParam Long userId) {
+        List<ProjectDTO> myProjects = projectService.getMyOwnedProjects(userId);
+        return ResponseEntity.ok(myProjects);
+    }
+
+    @GetMapping("/id/{id}")
     public ResponseEntity<ProjectDTO> getProject(@PathVariable Long id) {
         ProjectDTO project = projectService.findById(id);
         return ResponseEntity.ok(project);

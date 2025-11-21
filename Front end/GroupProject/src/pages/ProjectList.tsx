@@ -1,16 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
 import { useNavigate } from "react-router";
 import type { ProjectDTO } from "../types/models.js";
 import { API_URL } from "../api/config.ts";
 import { currentUser } from "../stores/userStore.ts";
-import { Button } from "react-bootstrap";
 import NewProjectButton from "../components/NewProjectButton.tsx";
 
 
 const ProjectList = () => {
     const siteUser = currentUser();
     const queryClient = useQueryClient();
+
+    const projectUrl = siteUser.role === "PROJECTMANAGER"
+        ? `${API_URL}/myProjects/owned?userId=${siteUser.id}`
+        : `${API_URL}/myProjects?userId=${siteUser.id}`;
 
     const deleteProject = useMutation({
         mutationFn: async (projectID: number) => {
@@ -37,10 +39,10 @@ const ProjectList = () => {
         isLoading,
         error,
     } = useQuery<ProjectDTO[]>({
-        queryKey: ["projects", userLogin?.id],
-        enabled: !!userLogin?.id,
+        queryKey: ["projects", siteUser.id, siteUser.role],
+        enabled: !!siteUser.id,
         queryFn: async () => {
-            const response = await fetch(`${API_URL}/myProjects?userId=${userLogin.id}`);
+            const response = await fetch(projectUrl);
             if (!response.ok) {
                 throw new Error("Failed to fetch projects");
             }
@@ -55,10 +57,11 @@ const ProjectList = () => {
     if (error) {
         return <div style={{ color: "red" }}>Error: {error.message}</div>;
     }
-
+        
     return (
         <div>
             <h2 style={{ padding: "16px" }}>My Projects</h2>
+            
 
             {projects && projects.length > 0 && (
                 <div style={{ paddingLeft: "16px", marginBottom: "16px" }}>
