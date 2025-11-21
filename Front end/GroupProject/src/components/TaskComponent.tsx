@@ -43,6 +43,18 @@ const TaskComponent = ({ taskName, taskId, projectId, done, isWatching }: TaskCo
         }
     });
 
+    const deleteTask = useMutation({
+        mutationFn: async () => {
+            await fetch(
+                `${API_URL}/tasks/${taskId}?userId=${siteUser.id}`,
+                { method: "DELETE" }
+            );
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["projects", projectId.toString()] });
+        }
+    });
+
     return (
         <div style={{
             width: "268px",
@@ -117,6 +129,27 @@ const TaskComponent = ({ taskName, taskId, projectId, done, isWatching }: TaskCo
                     }}
                 >
                     {done ? "undo" : "done"}
+                </button>
+            )}
+
+            {showButtons && (
+                <button
+                    style={{
+                        position: "absolute",
+                        bottom: "6px",
+                        right: "6px",
+                        padding: "2px 6px",
+                        fontSize: "12px",
+                        cursor: "pointer",
+                    }}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        if (confirm("Delete this task?")) {
+                            deleteTask.mutate();
+                        }
+                    }}
+                >
+                    delete
                 </button>
             )}
         </div>
