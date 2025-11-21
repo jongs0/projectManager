@@ -10,9 +10,9 @@ import { useParams } from "react-router";
 
 const Project = () => {
     const { projectId: projectId } = useParams<{ projectId: string }>();
-
+    
     const userLogin = currentUser();
-
+    
     const {
         data: project,
         isLoading,
@@ -28,115 +28,127 @@ const Project = () => {
             return response.json();
         },
     });
-
+    
     if (isLoading) {
         return <div>Loading project...</div>;
     }
-
+    
     if (error) {
         return <div style={{ color: "red" }}>Error: {error.message}</div>;
     }
-
+    
     return (
-        <div style={{ flex: 1, display: "flex", }}>
+        <div style={{
+            marginLeft: "0px",
+            margin: "16px"
+        }}>
+        <div style={{
+            width: "300px",
+            background: "black",
+            border: "2px solid white",
+            borderRadius: "10px",
+            margin: "16px",
+        }}>
+        <strong style={{
+            display: "block",
+            fontSize: "25px",
+            textAlign: "center"
+        }}>
+        Teams
+        </strong>
+        <div style={{
+            flex: 1,
+            height: "calc(100vh - 160px)",
+            width: "300px",
+            background: "black",
+            border: "2px solid white",
+            borderRadius: "10px",
+            marginTop: "8px",
+            overflowY: "scroll",
+            overflowX: "hidden"
+        }}>
+        {project && project.teams.length > 0 ? (
+            project.teams.map((team) => (
+                <TeamComponent
+                key={team.id}
+                teamId={team.id}
+                teamName={team.name}
+                />
+            ))
+        ) : (
+            <p style={{ padding: "8px", textAlign: "center" }}>
+            No teams assigned
+            </p>
+        )}
+        </div>
+        </div>
+        
+        <div style={{ marginLeft: "0px", margin: "16px" }}>
+        <strong style={{ display: "block", fontSize: "25px", textAlign: "center" }}>Backlog</strong>
+        <div style={{
+            flex: 1,
+            height: "calc(100vh - 160px)",
+            width: "300px",
+            background: "black",
+            border: "2px solid white",
+            borderRadius: "10px",
+            marginTop: "8px",
+            overflowY: "scroll",
+            overflowX: "hidden"
+        }}>
+        {project && project.tasks
+            .filter(task => !task.done)
+            .map(task => (
+                <TaskComponent
+                key={task.id}
+                taskName={task.name}
+                taskId={task.id}
+                projectId={project.id}
+                done={task.done}
+                isWatching={task.watchers.some(w => w.id === userLogin.id)}
+                />
+            ))}
+            
+            <NewTaskBox
+            projectId={project!.id}
+            refreshTasks={() => refetch()}
+            />
+            </div>
+            </div>
+            
+            
+            <div style={{ marginLeft: "0px", margin: "16px" }}>
+            <strong style={{ display: "block", fontSize: "25px", textAlign: "center" }}>Done</strong>
             <div style={{
+                flex: 1,
+                height: "calc(100vh - 160px)",
                 width: "300px",
                 background: "black",
                 border: "2px solid white",
                 borderRadius: "10px",
-                margin: "16px",
+                marginTop: "8px",
+                overflowY: "scroll",
+                overflowX: "hidden"
             }}>
-                <strong style={{ display: "block", fontSize: "30px", textAlign: "center" }}>Teams</strong>
-                <div style={{
-                    flex: 1,
-                    height: "calc(100vh - 160px)",
-                    width: "300px",
-                    marginTop: "8px",
-                    overflowY: "scroll",
-                    overflowX: "hidden"
-                }}>
-                    {project && project.teams.length > 0 ? (
-                        project.teams.map((team) => (
-                            <TeamComponent
-                                key={team.id}
-                                teamId={team.id}
-                                teamName={team.name}
-                            />
-                        ))
-                    ) : (
-                        <p style={{ padding: "8px", textAlign: "center" }}>
-                            No teams assigned
-                        </p>
-                    )}
-                </div>
-            </div>
-
-            <div style={{ marginLeft: "0px", margin: "16px" }}>
-                <strong style={{ display: "block", fontSize: "25px", textAlign: "center" }}>Backlog</strong>
-                <div style={{
-                    flex: 1,
-                    height: "calc(100vh - 160px)",
-                    width: "300px",
-                    background: "black",
-                    border: "2px solid white",
-                    borderRadius: "10px",
-                    marginTop: "8px",
-                    overflowY: "scroll",
-                    overflowX: "hidden"
-                }}>
-                    {project && project.tasks
-                        .filter(task => !task.done)
-                        .map(task => (
-                            <TaskComponent
-                                key={task.id}
-                                taskName={task.name}
-                                taskId={task.id}
-                                projectId={project.id}
-                                done={task.done}
-                                isWatching={task.watchers.some(w => w.id === userLogin.id)}
-                            />
-                        ))}
-
-                    <NewTaskBox
-                        projectId={project!.id}
-                        refreshTasks={() => refetch()}
+            {project && project.tasks
+                .filter(task => task.done)
+                .map(task => (
+                    <TaskComponent
+                    key={task.id}
+                    taskName={task.name}
+                    taskId={task.id}
+                    projectId={project.id}
+                    done={task.done}
+                    isWatching={task.watchers.some(w => w.id === userLogin.id)}
                     />
+                ))}
                 </div>
-            </div>
-
-
-            <div style={{ marginLeft: "0px", margin: "16px" }}>
-                <strong style={{ display: "block", fontSize: "25px", textAlign: "center" }}>Done</strong>
-                <div style={{
-                    flex: 1,
-                    height: "calc(100vh - 160px)",
-                    width: "300px",
-                    background: "black",
-                    border: "2px solid white",
-                    borderRadius: "10px",
-                    marginTop: "8px",
-                    overflowY: "scroll",
-                    overflowX: "hidden"
-                }}>
-                    {project && project.tasks
-                        .filter(task => task.done)
-                        .map(task => (
-                            <TaskComponent
-                                key={task.id}
-                                taskName={task.name}
-                                taskId={task.id}
-                                projectId={project.id}
-                                done={task.done}
-                                isWatching={task.watchers.some(w => w.id === userLogin.id)}
-                            />
-                        ))}
                 </div>
-            </div>
-
-        </div>
-
-    )
-
-}
-
-export default Project;
+                
+                </div>
+                
+            )
+            
+        }
+        
+        export default Project;
