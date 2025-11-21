@@ -41,7 +41,6 @@ const CommentComponent = ({ commentAuthor, body, commentId, authorId }) => {
         } else {
         handleEditcomment.mutate({ body: comment.body });
         }
-    
     }
 
     return (

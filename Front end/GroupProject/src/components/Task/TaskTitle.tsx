@@ -85,7 +85,7 @@ const TaskTitle = () => {
                             background: "rgba(30, 30, 30, 1)",
                         }}
                     />
-                    {titleText !== taskData.name && !isClient && (
+                    {!isClient && (
                         <Button type="submit" style={{
                             width: "200px",
                             height: "40px",
@@ -93,7 +93,7 @@ const TaskTitle = () => {
                             padding: "0px",
                         }}
                             disabled={titleText == ""}>
-                            save
+                            {titleText !== taskData.name ? "save" : "cancel"}
                         </Button>
                     )}
                 </form>
