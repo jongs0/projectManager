@@ -36,7 +36,6 @@ const Project = () => {
     return (
         <div style={{ flex: 1, display: "flex" }}>
             
-            {/* TEAMS COLUMN */}
             <div style={{ margin: "16px" }}>
                 <div
                     style={{
@@ -76,11 +75,10 @@ const Project = () => {
                         </p>
                     )}
 
-                    <NewTeamButton projectID={project?.id}/>
+                    <NewTeamButton projectId={project?.id}/>
                 </div>
             </div>
 
-            {/* BACKLOG COLUMN */}
             <div style={{ margin: "16px" }}>
                 <strong
                     style={{
@@ -128,7 +126,6 @@ const Project = () => {
                 </div>
             </div>
 
-            {/* DONE COLUMN */}
             <div style={{ margin: "16px" }}>
                 <strong
                     style={{

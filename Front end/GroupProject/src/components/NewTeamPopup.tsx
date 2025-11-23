@@ -6,7 +6,7 @@ import { API_URL } from "../api/config.ts";
 import { useNavigate } from "react-router";
 import { currentUser } from "../stores/userStore.ts";
 
-export default function NewTeamPopup({ projectID, closeFunction }) {
+export default function NewTeamPopup({ projectId, closeFunction }) {
 
 
     const siteUser = currentUser();
@@ -24,7 +24,7 @@ export default function NewTeamPopup({ projectID, closeFunction }) {
             return res.json();
         },
         onSuccess: (project) => {
-            queryClient.invalidateQueries({ queryKey: ["projects", projectID] })
+            queryClient.invalidateQueries({ queryKey: ["projects", projectId] })
             closeFunction();
         },
         onError: () => {
@@ -33,7 +33,7 @@ export default function NewTeamPopup({ projectID, closeFunction }) {
     });
 
     const [teamInfo, setTeamInfo] = useState({
-        projectId: 1,
+        projectId: -1,
         name: ""
     });
 
@@ -90,7 +90,7 @@ export default function NewTeamPopup({ projectID, closeFunction }) {
                             id="title"
                             name="title"
                             value={teamInfo.name}
-                            onChange={(e) => setTeamInfo({ ...teamInfo, name: e.target.value })}
+                            onChange={(e) => setTeamInfo({ ...teamInfo, name: e.target.value, projectId: projectId })}
                             disabled={false}
                             style={{
                                 width: "95%",

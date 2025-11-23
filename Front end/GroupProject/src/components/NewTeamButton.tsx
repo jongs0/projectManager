@@ -3,7 +3,7 @@ import { currentUser } from "../stores/userStore.ts";
 import { useState } from "react";
 import NewTeamPopup from "./NewTeamPopup.tsx";
 
-const NewTeamButton = ({ projectID }) => {
+const NewTeamButton = ({ projectId }) => {
     const user = currentUser();
 
     const [isOpened, openMenu] = useState(false);
@@ -32,7 +32,7 @@ const NewTeamButton = ({ projectID }) => {
             </div>
 
 
-            {isOpened && <NewTeamPopup projectID={projectID} closeFunction={() => openMenu(false)} />}
+            {isOpened && <NewTeamPopup projectId={projectId} closeFunction={() => openMenu(false)} />}
         </>
     )
 
