@@ -10,6 +10,8 @@ import NewTeamButton from "../components/NewTeamButton.tsx";
 
 const Project = () => {
     const { projectId } = useParams<{ projectId: string }>();
+    const numericProjectId = Number(projectId);
+
     const userLogin = currentUser();
 
     const {
@@ -18,10 +20,10 @@ const Project = () => {
         error,
         refetch
     } = useQuery<ProjectDTO>({
-        queryKey: ["projects", projectId],
+        queryKey: ["projects", numericProjectId],
         queryFn: async () => {
             const response = await fetch(
-                `${API_URL}/myProjects/id/${projectId}?userId=${userLogin.id}`
+                `${API_URL}/myProjects/id/${numericProjectId}?userId=${userLogin.id}`
             );
             if (!response.ok) {
                 throw new Error("Failed to fetch project");

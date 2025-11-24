@@ -8,7 +8,7 @@ import { currentUser } from "../stores/userStore.ts";
 
 export default function NewTeamPopup({ projectId, closeFunction }) {
 
-
+    const numericProjectId = Number(projectId);
     const siteUser = currentUser();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
@@ -24,7 +24,7 @@ export default function NewTeamPopup({ projectId, closeFunction }) {
             return res.json();
         },
         onSuccess: (project) => {
-            queryClient.invalidateQueries({ queryKey: ["projects", projectId] })
+            queryClient.invalidateQueries({ queryKey: ["projects", numericProjectId] })
             closeFunction();
         },
         onError: () => {
