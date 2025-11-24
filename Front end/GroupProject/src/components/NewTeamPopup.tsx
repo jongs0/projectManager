@@ -90,7 +90,7 @@ export default function NewTeamPopup({ projectId, closeFunction }) {
                             id="title"
                             name="title"
                             value={teamInfo.name}
-                            onChange={(e) => setTeamInfo({ ...teamInfo, name: e.target.value, projectId: projectId })}
+                            onChange={(e) => setTeamInfo({ ...teamInfo, name: e.target.value, projectId: numericProjectId })}
                             disabled={false}
                             style={{
                                 width: "95%",
