@@ -64,12 +64,21 @@ public class TeamService {
         AppUser appUser = appUserRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + userId));
 
+        if (team.getTeamMembers().contains(appUser)) {
+            throw new IllegalStateException("User already in this team");
+        }
+
+        if (!appUser.getTeams().isEmpty()) {
+            throw new IllegalStateException("User already belongs to a team");
+        }
+
         team.addTeamMember(appUser);
         appUser.addTeam(team);
         appUserRepository.save(appUser);
-        teamRepository.save(team);
-        return TeamDTO.fromEntity(team);
-    }
+        Team updated = teamRepository.save(team);
+        return teamRepository.findById(teamId)
+                .map(TeamDTO::fromEntity)
+                .orElseThrow();    }
 
     public TeamDTO removeMember(Long teamId, Long userId) {
         Team team = teamRepository.findById(teamId)

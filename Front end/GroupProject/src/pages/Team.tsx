@@ -12,7 +12,9 @@ import AddUserButton from "../components/AddUserButton.tsx";
 const Team = () => {
     
     
-    const { teamId: teamId } = useParams<{ teamId: string }>();
+    const { teamId } = useParams<{ teamId: string }>();
+
+    const numericTeamId = Number(teamId);   
     
     const userLogin = currentUser();
     const navigate = useNavigate();
@@ -22,9 +24,9 @@ const Team = () => {
         isLoading,
         error,
     } = useQuery<TeamDTO>({
-        queryKey: ["teams", teamId],
+        queryKey: ["teams", numericTeamId],
         queryFn: async () => {
-            const response = await fetch(`${API_URL}/teams/${teamId}?userId=${userLogin.id}`);
+            const response = await fetch(`${API_URL}/teams/${numericTeamId}?userId=${userLogin.id}`);
             if (!response.ok) {
                 throw new Error("Failed to fetch team");
             }
@@ -62,7 +64,7 @@ const Team = () => {
             overflowX: "hidden"
         }}>
         {(team?.teamMembers && team?.teamMembers.length > 0) && team?.teamMembers.map((user) => (
-            <UserComponent userId={user.id} teamId={team.id} />
+            <UserComponent userId={user.id} teamId={numericTeamId} />
         ))}
         </div>
         
