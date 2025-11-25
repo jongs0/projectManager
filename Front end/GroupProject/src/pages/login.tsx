@@ -67,7 +67,6 @@ const Login = () => {
                 margin: "8px",
                 borderRadius: "8px",
                 border: "2px solid white",
-                background: "black",
                 color: "white"
             }}  
             />
@@ -87,7 +86,6 @@ const Login = () => {
                 margin: "8px",
                 borderRadius: "8px",
                 border: "2px solid white",
-                background: "black",
                 color: "white"
             }}
             />
@@ -125,19 +123,13 @@ const Login = () => {
         )}
         
         {isRegistering && (
-            <>
-            <RegisterComponent />
-            <button onClick={() => setIsRegistering(false)}
-                style={{
-                width: "140px",
-                height: "40px",
-                cursor: "pointer",
-                alignItems: "center",
-                justifyContent: "center",
-                display: "flex",
-            }}>Go back</button>
             
-            </>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px", marginTop: "10px" }}>
+
+            <RegisterComponent onBack={() => setIsRegistering(false)} />
+
+            </div>
+        
         )}
         
         </div>

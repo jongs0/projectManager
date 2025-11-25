@@ -8,8 +8,7 @@ import { Form, FormSelect } from "react-bootstrap";
 import type { Role } from "../types/models.js";
 
 
-
-const RegisterComponent = () => {
+const RegisterComponent = ({ onBack }: { onBack: () => void }) => {
     
     const [register, setRegister] = useState({
         email: "",
@@ -48,10 +47,9 @@ const RegisterComponent = () => {
     
     return (
         
-        <div>
-        <div style={{ display:"flex", flexDirection:"column", }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
         
-        Email:
+        <div style={{ textAlign: "center" }}>Email:</div>
         <input 
         type="text"
         value={register.email}
@@ -67,7 +65,7 @@ const RegisterComponent = () => {
                     }}
         />
 
-        Enter your password:
+        <div style={{ textAlign: "center" }}>Enter your password:</div>
         <input 
         type="password"
         value={register.tempPassword}
@@ -83,8 +81,7 @@ const RegisterComponent = () => {
                     }}
         />
         
-        
-        Verify your password:
+        <div style={{ textAlign: "center" }}>Verify your password:</div>
         <input 
         type="password"
         value={register.verifiedPassword}
@@ -99,9 +96,9 @@ const RegisterComponent = () => {
                         border: "2px solid white"
                     }}
         />
-        
-        Select your role:
-        <Form.Select aria-label="Select your role"
+
+        <div style={{ textAlign: "center" }}>Select your role:</div>
+        <Form.Select aria-label="Select your role " 
         value={register.role}
         onChange={(e) => setRegister({ ...register, role: e.target.value as Role })}
         style={{
@@ -111,7 +108,7 @@ const RegisterComponent = () => {
                         alignItems: "center",
                         justifyContent: "center",
                         display: "flex",
-                        border: "2px solid white"
+                        border: "2px solid white",
                     }}
         >
         
@@ -125,17 +122,10 @@ const RegisterComponent = () => {
         </Form.Select>
         
         {!passwordsMatch && register.verifiedPassword.length > 0 && (
-            <p style={{color: "red" }}> Passwords do not match </p>
+            <p style={{color: "red", textAlign: "center"     }}> Passwords do not match </p>
         )}
         
-        <div style={{
-                    display: "flex",
-                    gap: "12px",
-                    marginTop: "10px",
-                    justifyContent: "center"
-                }}>
-
-        </div>
+        <div style={{ display: "flex", gap: "12px", marginTop: "8px" }}>
         <button 
         disabled={handleRegistration.isPending || !passwordsMatch || !register.role || register.email === ""} 
         onClick={() => {
@@ -144,23 +134,32 @@ const RegisterComponent = () => {
                 password: register.verifiedPassword,
                 role: register.role
             };
-            console.log(registerDto);
 
             handleRegistration.mutate(registerDto);
         }}
 
         style={{
                             width: "140px",
-                height: "40px",
-                cursor: "pointer",
-                alignItems: "center",
-                justifyContent: "center",
-                display: "flex",
+                            height: "40px",
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center"
                         }}
 
         >
         {handleRegistration.isPending ? "Registering..." : "Register"}
         </button>
+
+        <button onClick={onBack}
+        style={{
+                            width: "140px",
+                            height: "40px",
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center"
+                        }}>Go back</button>
 
         </div>
         </div>
