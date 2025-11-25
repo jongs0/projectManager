@@ -49,7 +49,7 @@ const RegisterComponent = ({ onBack }: { onBack: () => void }) => {
 
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
 
-            <div style={{ textAlign: "center"}}>Email:</div>
+            <div style={{ textAlign: "center" }}>Email:</div>
             <input
                 type="text"
                 value={register.email}
@@ -61,8 +61,7 @@ const RegisterComponent = ({ onBack }: { onBack: () => void }) => {
                     padding: "8px",
                     borderRadius: "8px",
                     color: "white",
-                    border: "2px solid white", 
-                    margin: "0px"
+                    border: "2px solid white"
                 }}
             />
 
@@ -78,8 +77,7 @@ const RegisterComponent = ({ onBack }: { onBack: () => void }) => {
                     padding: "8px",
                     borderRadius: "8px",
                     color: "white",
-                    border: "2px solid white", 
-                    margin: "0px"
+                    border: "2px solid white"
                 }}
             />
 
@@ -95,8 +93,7 @@ const RegisterComponent = ({ onBack }: { onBack: () => void }) => {
                     padding: "8px",
                     borderRadius: "8px",
                     color: "white",
-                    border: "2px solid white", 
-                    margin: "0px"
+                    border: "2px solid white"
                 }}
             />
 
@@ -112,7 +109,6 @@ const RegisterComponent = ({ onBack }: { onBack: () => void }) => {
                     justifyContent: "center",
                     display: "flex",
                     border: "2px solid white",
-                    margin: "0px"
                 }}
             >
 
