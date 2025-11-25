@@ -49,38 +49,70 @@ const RegisterComponent = () => {
     return (
         
         <div>
-    
-
-
-        <div style={{ display:"flex", flexDirection:"column", gap:"10px" }}>
+        <div style={{ display:"flex", flexDirection:"column", }}>
         
-        <p>Email:</p>
+        Email:
         <input 
         type="text"
         value={register.email}
         onChange={(e) => setRegister({ ...register, email: e.target.value})}
         placeholder="Enter email"
+        style={{
+                        width: "300px",
+                        height: "40px",
+                        padding: "8px",
+                        borderRadius: "8px",
+                        color: "white",
+                        border: "2px solid white"
+                    }}
         />
-        <p>Password</p>
+
+        Enter your password:
         <input 
         type="password"
         value={register.tempPassword}
         onChange={(e) => setRegister({ ...register, tempPassword: e.target.value})}
         placeholder="Enter password"
+        style={{
+                        width: "300px",
+                        height: "40px",
+                        padding: "8px",
+                        borderRadius: "8px",
+                        color: "white",
+                        border: "2px solid white"
+                    }}
         />
         
-        <p>Verify password</p>
+        
+        Verify your password:
         <input 
         type="password"
         value={register.verifiedPassword}
         onChange={(e) => setRegister({ ...register, verifiedPassword: e.target.value})}
         placeholder="Verify password"
+          style={{
+                        width: "300px",
+                        height: "40px",
+                        padding: "8px",
+                        borderRadius: "8px",
+                        color: "white",
+                        border: "2px solid white"
+                    }}
         />
         
-        <p>Select your role</p>
+        Select your role:
         <Form.Select aria-label="Select your role"
         value={register.role}
         onChange={(e) => setRegister({ ...register, role: e.target.value as Role })}
+        style={{
+                        width: "300px",
+                        height: "45px",
+                        padding: "6px",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        display: "flex",
+                        border: "2px solid white"
+                    }}
         >
         
         <option value="">Choose your role</option>
@@ -96,6 +128,14 @@ const RegisterComponent = () => {
             <p style={{color: "red" }}> Passwords do not match </p>
         )}
         
+        <div style={{
+                    display: "flex",
+                    gap: "12px",
+                    marginTop: "10px",
+                    justifyContent: "center"
+                }}>
+
+        </div>
         <button 
         disabled={handleRegistration.isPending || !passwordsMatch || !register.role || register.email === ""} 
         onClick={() => {
@@ -108,6 +148,16 @@ const RegisterComponent = () => {
 
             handleRegistration.mutate(registerDto);
         }}
+
+        style={{
+                            width: "140px",
+                height: "40px",
+                cursor: "pointer",
+                alignItems: "center",
+                justifyContent: "center",
+                display: "flex",
+                        }}
+
         >
         {handleRegistration.isPending ? "Registering..." : "Register"}
         </button>
