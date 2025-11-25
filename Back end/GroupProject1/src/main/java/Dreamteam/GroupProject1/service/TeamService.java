@@ -68,8 +68,10 @@ public class TeamService {
             throw new IllegalStateException("User already in this team");
         }
 
-        if (!appUser.getTeams().isEmpty()) {
-            throw new IllegalStateException("User already belongs to a team");
+        for (Team t : appUser.getTeams()) {
+            if (t.getProject() != null && t.getProject().getId().equals(team.getProject().getId())) {
+                throw new IllegalStateException("User already belongs to a team in this project");
+            }
         }
 
         team.addTeamMember(appUser);

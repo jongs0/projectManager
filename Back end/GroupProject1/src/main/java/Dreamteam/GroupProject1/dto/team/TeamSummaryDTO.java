@@ -4,12 +4,14 @@ import Dreamteam.GroupProject1.models.Team;
 
 public record TeamSummaryDTO(
         Long id,
-        String name
+        String name,
+        Long projectId
 ) {
     public static TeamSummaryDTO fromEntity(Team team) {
         return new TeamSummaryDTO(
                 team.getId(),
-                team.getName()
+                team.getName(),
+                team.getProject().getId()
         );
     }
 }

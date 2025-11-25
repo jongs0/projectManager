@@ -51,10 +51,14 @@ export default function AddUserPopup({ closeFunction, team }) {
 
     const [searchString, setSearchString] = useState("")
 
-    const filteredUsers = users?.filter(u =>
+    const filteredUsers = users
+    ?.filter(u =>
         !team.teamMembers.some(tm => tm.id === u.id) &&
-        (u.teamDtos.length === 0)).filter(u =>
-            u.email.toLowerCase().includes(searchString.toLowerCase()));
+        !u.teamDtos.some(t => t.projectId === team.project.id)
+    )
+    .filter(u =>
+        u.email.toLowerCase().includes(searchString.toLowerCase())
+    );
 
     return (
         <div style={{
