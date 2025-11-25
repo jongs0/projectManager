@@ -52,7 +52,9 @@ const Team = () => {
             margin: "16px",
             display: "flex",
             flexDirection: "column",
-            alignItems: "center"
+            alignItems: "center",
+            justifyContent: "center",
+            
         }}>
         <strong style={{ display: "block", fontSize: "30px", textAlign: "center" }}>Users</strong>
         <div style={{
@@ -111,6 +113,7 @@ const Team = () => {
             textAlign: "center",
             padding: "16px",
             background: "black",
+            justifyContent: "center"
         }}
         >
         {team?.project.name}

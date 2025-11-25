@@ -78,6 +78,8 @@ const UserComponent = ({ userId, teamId }) => {
             cursor: "pointer",
             display: "flex",
             flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
         }}
             onMouseOver={(e) => { e.currentTarget.style.background = "rgba(19, 19, 19, 1)" }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(0, 0, 0, 1)"; openMenu(false) }}
