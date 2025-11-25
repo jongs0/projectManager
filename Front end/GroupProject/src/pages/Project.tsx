@@ -118,6 +118,7 @@ const Project = () => {
                                     isWatching={task.watchers.some(
                                         (w) => w.id === userLogin.id
                                     )}
+                                    userRole={userLogin.role}
                                 />
                             ))}
 
@@ -165,6 +166,7 @@ const Project = () => {
                                     isWatching={task.watchers.some(
                                         (w) => w.id === userLogin.id
                                     )}
+                                    userRole={userLogin.role}
                                 />
                             ))}
                 </div>

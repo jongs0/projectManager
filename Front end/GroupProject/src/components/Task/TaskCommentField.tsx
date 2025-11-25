@@ -76,6 +76,8 @@ const TaskCommentField = ({ taskId }: TaskCommentFieldProps) => {
                     resize: "none"
                 }}
             />
+
+            {user.role !== "CLIENT" && (
             <Button type="submit" style={{
                 width: "200px",
                 height: "40px",
@@ -85,6 +87,7 @@ const TaskCommentField = ({ taskId }: TaskCommentFieldProps) => {
                 disabled={commentText.trim() === ""}>
                 submit
             </Button>
+            )}
         </form>
     )
 

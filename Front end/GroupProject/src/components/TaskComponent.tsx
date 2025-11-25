@@ -10,10 +10,11 @@ interface TaskComponentProps {
     projectId: number,
     done: boolean;
     isWatching: boolean;
+    userRole: string;
 
 }
 
-const TaskComponent = ({ taskName, taskId, projectId, done, isWatching }: TaskComponentProps) => {
+const TaskComponent = ({ taskName, taskId, projectId, done, isWatching, userRole  }: TaskComponentProps) => {
     const navigate = useNavigate();
     const siteUser = currentUser();
     const queryClient = useQueryClient();
@@ -92,7 +93,7 @@ const TaskComponent = ({ taskName, taskId, projectId, done, isWatching }: TaskCo
                 </svg>
             </strong>)}
 
-            {showButtons && (
+            {userRole !== "CLIENT" && showButtons && (
 
                 <button
                     style={{
@@ -114,7 +115,7 @@ const TaskComponent = ({ taskName, taskId, projectId, done, isWatching }: TaskCo
                 </button>
             )}
 
-            {showButtons && (
+            {userRole !== "CLIENT" && showButtons && (
                 <button
                     style={{
                         position: "absolute",
@@ -135,7 +136,7 @@ const TaskComponent = ({ taskName, taskId, projectId, done, isWatching }: TaskCo
                 </button>
             )}
 
-            {showButtons && (
+            {userRole !== "CLIENT" && showButtons && (
                 <button
                     style={{
                         position: "absolute",
