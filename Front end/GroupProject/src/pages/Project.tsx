@@ -59,7 +59,7 @@ const Project = () => {
                         textAlign: "center"
                     }}
                 >
-                    Teams
+                    Teams {numericProjectId}
                 </strong>
 
 
@@ -85,7 +85,7 @@ const Project = () => {
                 <strong
                     style={{
                         display: "block",
-                        fontSize: "25px",
+                        fontSize: "30px",
                         textAlign: "center"
                     }}
                 >
@@ -95,7 +95,7 @@ const Project = () => {
                 <div
                     style={{
                         flex: 1,
-                        height: "calc(100vh - 160px)",
+                        height: "calc(100vh - 165px)",
                         width: "300px",
                         background: "black",
                         border: "2px solid white",
@@ -132,7 +132,7 @@ const Project = () => {
                 <strong
                     style={{
                         display: "block",
-                        fontSize: "25px",
+                        fontSize: "30px",
                         textAlign: "center"
                     }}
                 >
@@ -142,7 +142,7 @@ const Project = () => {
                 <div
                     style={{
                         flex: 1,
-                        height: "calc(100vh - 160px)",
+                        height: "calc(100vh - 165px)",
                         width: "300px",
                         background: "black",
                         border: "2px solid white",

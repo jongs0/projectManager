@@ -117,6 +117,7 @@ const Team = () => {
         </strong>
         
         <div
+        className="bottom"
         style={{
             flex: 1,
             background: "rgba(235, 87, 104, 1)",
@@ -129,14 +130,6 @@ const Team = () => {
         {team?.project.description}
         </p>
         </div>
-        
-        <div
-        className="bottom"
-        style={{
-            height: "40px",
-            background: "rgba(235, 87, 104, 1)",
-        }}
-        />
         
         </div>
      </div>

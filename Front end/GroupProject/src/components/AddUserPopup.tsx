@@ -49,9 +49,12 @@ export default function AddUserPopup({ closeFunction, team }) {
         },
     });
 
+    const [searchString, setSearchString] = useState("")
+
     const filteredUsers = users?.filter(u =>
         !team.teamMembers.some(tm => tm.id === u.id) &&
-        (u.teamDtos.length === 0));
+        (u.teamDtos.length === 0)).filter(u =>
+            u.email.toLowerCase().includes(searchString.toLowerCase()));
 
     return (
         <div style={{
@@ -78,12 +81,32 @@ export default function AddUserPopup({ closeFunction, team }) {
                 alignItems: "center",
                 flexDirection: "column",
             }} onClick={e => e.stopPropagation()}>
+                <textarea
+                    id="description"
+                    name="description"
+                    value={searchString}
+                    onChange={(e) => setSearchString(e.target.value)}
+                    disabled={false}
+                    placeholder="Search"
+                    style={{
+                        width: "90%",
+                        height: "90px",
+                        background: "rgba(30, 30, 30, 1)",
+                        border: "2px solid white",
+                        borderRadius: "10px",
+                        margin: "8px",
+                        cursor: "text",
+                        resize: "none",
+                        fontSize: "30px",
+                        marginTop: "18px"
+                    }}
+                />
                 {filteredUsers && filteredUsers.length > 0 ? (
                     filteredUsers?.map((user) => (
                         <div key={user.id}
                             style={{
-                                width: "90%",
-                                height: "60px",
+                                width: "80%",
+                                height: "80px",
                                 background: "black",
                                 border: "2px solid white",
                                 borderRadius: "10px",
@@ -92,20 +115,22 @@ export default function AddUserPopup({ closeFunction, team }) {
                                 display: "flex",
                                 flexDirection: "row",
                                 overflowY: "scroll",
+                                textAlign: "center",
+                                alignItems: "center",
+                                justifyContent: "flex-start",
+                                paddingLeft: "12px",
+                                fontSize: "25px"
                             }}
                             onMouseOver={(e) => { e.currentTarget.style.background = "rgba(19, 19, 19, 1)" }}
                             onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(0, 0, 0, 1)" }}
                             onClick={() => { addUser.mutate(user.id) }}>
-                            <p>{user.email}</p>
+                            {user.email}
                         </div>))
                 ) : (
                     <div
                         style={{
                             width: "90%",
                             height: "60px",
-                            background: "black",
-                            border: "2px solid white",
-                            borderRadius: "10px",
                             margin: "8px",
                             display: "flex",
                             alignItems: "center",
@@ -113,7 +138,7 @@ export default function AddUserPopup({ closeFunction, team }) {
                             opacity: 0.8
                         }}
                     >
-                        All users already assigned
+                        No users found.
                     </div>
                 )}
 

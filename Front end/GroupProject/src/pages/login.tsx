@@ -49,7 +49,7 @@ const Login = () => {
         
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", height: "100vh" }}>
         
-        <h1>Project Manager PRO</h1>
+        <h1 style={{ margin: "0px"}}>Project Manager PRO</h1>
         {!isRegistering && (
             <>
              <div style={{ alignItems: "center"}}>
@@ -92,7 +92,7 @@ const Login = () => {
             
             <div style={{ display: "flex", gap: "12px", marginTop: "8px" }}>
             <button onClick={() => handleLogin.mutate(login)}
-            disabled={handleLogin.isPending}
+            disabled={handleLogin.isPending || login.email == "" || login.password == ""}
             style={{
                 width: "140px",
                 height: "40px",

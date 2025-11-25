@@ -110,10 +110,11 @@ const CommentComponent = ({ commentAuthor, body, commentId, authorId }) => {
             {isEditing ? "save" : "edit"}</Button>
         )}
         
-        <p style={{
-            display: "block", fontSize: "20px", textAlign: "right", marginRight: "8px",
-            bottom: "6px"
-        }}>{commentAuthor}</p>
+        {!isEditing && <p style={{
+            display: "block", fontSize: "20px", textAlign: "right", right:"6px",
+            bottom: "6px", position: "absolute", marginBottom: "0px"
+        }}>{commentAuthor}</p>}
+        
         </div>
     )
     
