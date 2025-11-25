@@ -66,7 +66,9 @@ const RegisterComponent = ({ onBack }: { onBack: () => void }) => {
                     padding: "8px",
                     borderRadius: "8px",
                     color: "white",
-                    border: "2px solid white"
+                    border: "2px solid white",
+                    margin: "0px"
+
                 }}
             />
 
@@ -86,13 +88,19 @@ const RegisterComponent = ({ onBack }: { onBack: () => void }) => {
                     padding: "8px",
                     borderRadius: "8px",
                     color: "white",
-                    border: "2px solid white"
+                    border: "2px solid white",
+                    margin: "0px"
+
                 }}
             />
 
             {!passwordLengthCheck && register.tempPassword.length > 0 && (
                 <p style={{ color: "red", textAlign: "center" }}> Passwords must be longer than 8 characters </p>
             ) }
+
+            {register.tempPassword.length === 0 && register.verifiedPassword.length > 0 && (
+                <p style={{ color: "red", textAlign: "center" }}> Enter a password </p>
+            )}
 
             <div style={{ textAlign: "center" }}>Verify your password:</div>
             <input
@@ -106,13 +114,11 @@ const RegisterComponent = ({ onBack }: { onBack: () => void }) => {
                     padding: "8px",
                     borderRadius: "8px",
                     color: "white",
-                    border: "2px solid white"
+                    border: "2px solid white",
+                    margin: "0px"
+
                 }}
             />
-
-            {register.tempPassword.length === 0 && register.verifiedPassword.length > 0 && (
-                <p style={{ color: "red", textAlign: "center" }}> Make sure to select a password above</p>
-            )}
 
             {!passwordsMatch && register.tempPassword.length > 0 && register.verifiedPassword.length > 0 && (
                 <p style={{ color: "red", textAlign: "center" }}> Passwords do not match </p>
@@ -130,6 +136,8 @@ const RegisterComponent = ({ onBack }: { onBack: () => void }) => {
                     justifyContent: "center",
                     display: "flex",
                     border: "2px solid white",
+                    margin: "0px"
+
                 }}
             >
 
@@ -143,6 +151,17 @@ const RegisterComponent = ({ onBack }: { onBack: () => void }) => {
             </Form.Select>
 
             <div style={{ display: "flex", gap: "12px", marginTop: "8px" }}>
+
+                <button onClick={onBack}
+                    style={{
+                        width: "140px",
+                        height: "40px",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center"
+                    }}>Go back</button>
+                    
                 <button
                     disabled={handleRegistration.isPending || !passwordsMatch || !register.role || register.email === ""}
                     onClick={() => {
@@ -167,16 +186,6 @@ const RegisterComponent = ({ onBack }: { onBack: () => void }) => {
                 >
                     {handleRegistration.isPending ? "Registering..." : "Register"}
                 </button>
-
-                <button onClick={onBack}
-                    style={{
-                        width: "140px",
-                        height: "40px",
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                    }}>Go back</button>
 
             </div>
         </div>
