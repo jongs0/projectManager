@@ -23,14 +23,32 @@ export default function NewTeamPopup({ projectId, closeFunction }) {
             if (!res.ok) throw new Error("Creation failed");
             return res.json();
         },
-        onSuccess: (project) => {
+        onSuccess: (team) => {
             queryClient.invalidateQueries({ queryKey: ["projects", numericProjectId] })
+            addUser.mutate(team.id);
             closeFunction();
         },
         onError: () => {
             console.log("No perms(?)");
         },
     });
+
+    const addUser = useMutation({
+        mutationFn: async (teamId: number) => {
+            const res = await fetch(`${API_URL}/teams/${teamId}/add/${siteUser.id}?pmId=${siteUser.id}`, {
+                method: "POST"
+            });
+            if (!res.ok) throw new Error("Creation failed");
+            return res.json();
+        },
+        onSuccess: () => {
+            
+        },
+        onError: () => {
+            console.log("No perms(?)");
+        },
+    });
+
 
     const [teamInfo, setTeamInfo] = useState({
         projectId: -1,
