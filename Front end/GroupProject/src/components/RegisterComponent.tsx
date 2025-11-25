@@ -22,6 +22,11 @@ const RegisterComponent = ({ onBack }: { onBack: () => void }) => {
         register.verifiedPassword.length > 0 &&
         register.tempPassword === register.verifiedPassword;
 
+    const passwordLengthCheck = register.tempPassword.length > 8
+
+    const isEmail = 
+    register.email.includes("@");
+
     const navigate = useNavigate();
 
     const handleRegistration = useMutation({
@@ -65,6 +70,10 @@ const RegisterComponent = ({ onBack }: { onBack: () => void }) => {
                 }}
             />
 
+            {!isEmail && register.email.length > 0 && (
+                <p style={{ color: "red", textAlign: "center" }}> Not a valid email adress </p>
+            )}
+
             <div style={{ textAlign: "center" }}>Enter your password:</div>
             <input
                 type="password"
@@ -81,6 +90,10 @@ const RegisterComponent = ({ onBack }: { onBack: () => void }) => {
                 }}
             />
 
+            {!passwordLengthCheck && register.tempPassword.length > 0 && (
+                <p style={{ color: "red", textAlign: "center" }}> Passwords must be longer than 8 characters </p>
+            ) }
+
             <div style={{ textAlign: "center" }}>Verify your password:</div>
             <input
                 type="password"
@@ -96,6 +109,14 @@ const RegisterComponent = ({ onBack }: { onBack: () => void }) => {
                     border: "2px solid white"
                 }}
             />
+
+            {register.tempPassword.length === 0 && register.verifiedPassword.length > 0 && (
+                <p style={{ color: "red", textAlign: "center" }}> Make sure to select a password above</p>
+            )}
+
+            {!passwordsMatch && register.tempPassword.length > 0 && register.verifiedPassword.length > 0 && (
+                <p style={{ color: "red", textAlign: "center" }}> Passwords do not match </p>
+            )}
 
             <div style={{ textAlign: "center" }}>Select your role:</div>
             <Form.Select aria-label="Select your role "
@@ -120,10 +141,6 @@ const RegisterComponent = ({ onBack }: { onBack: () => void }) => {
 
 
             </Form.Select>
-
-            {!passwordsMatch && register.verifiedPassword.length > 0 && (
-                <p style={{ color: "red", textAlign: "center" }}> Passwords do not match </p>
-            )}
 
             <div style={{ display: "flex", gap: "12px", marginTop: "8px" }}>
                 <button
