@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static Dreamteam.GroupProject1.models.enums.Role.PROJECTMANAGER;
+
 
 @Service
 public class TeamService {
@@ -67,10 +69,11 @@ public class TeamService {
         if (team.getTeamMembers().contains(appUser)) {
             throw new IllegalStateException("User already in this team");
         }
-
-        for (Team t : appUser.getTeams()) {
-            if (t.getProject() != null && t.getProject().getId().equals(team.getProject().getId())) {
-                throw new IllegalStateException("User already belongs to a team in this project");
+        if (!appUser.hasRole(PROJECTMANAGER)) {
+            for (Team t : appUser.getTeams()) {
+                if (t.getProject() != null && t.getProject().getId().equals(team.getProject().getId())) {
+                    throw new IllegalStateException("User already belongs to a team in this project");
+                }
             }
         }
 
@@ -80,7 +83,8 @@ public class TeamService {
         Team updated = teamRepository.save(team);
         return teamRepository.findById(teamId)
                 .map(TeamDTO::fromEntity)
-                .orElseThrow();    }
+                .orElseThrow();
+    }
 
     public TeamDTO removeMember(Long teamId, Long userId) {
         Team team = teamRepository.findById(teamId)

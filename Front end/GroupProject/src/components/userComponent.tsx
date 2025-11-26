@@ -23,6 +23,7 @@ const UserComponent = ({ userId, teamId }) => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["user", userId]})
+            queryClient.invalidateQueries({ queryKey: ["teams", teamId]})
         }
     });
 
@@ -74,7 +75,8 @@ const UserComponent = ({ userId, teamId }) => {
             background: "black",
             border: "2px solid white",
             borderRadius: "10px",
-            margin: "16px",
+            marginLeft: "16px",
+            marginTop: "8px",
             cursor: "pointer",
             display: "flex",
             flexDirection: "row",
@@ -85,7 +87,7 @@ const UserComponent = ({ userId, teamId }) => {
             onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(0, 0, 0, 1)"; openMenu(false) }}
             onClick={() => { if (user?.id != siteUser.id && siteUser.role == "PROJECTMANAGER") openMenu(true) }}
         >
-            <strong style={{ display: "block", fontSize: "30px", textAlign: "center" }}>{user?.email}</strong>
+            <strong style={{ display: "block", fontSize: "22px", textAlign: "center" }}>{user?.email}</strong>
             {isOpened && <div style={{
                 position: "absolute",
                 width: "268px",
@@ -134,7 +136,7 @@ const UserComponent = ({ userId, teamId }) => {
                 }}
                 disabled = {user?.role == "CLIENT"}
                     onClick={() => { changeRole.mutate("CLIENT") }}>
-                    Viewer
+                    Client
                 </Button>
 
                 {user && (
