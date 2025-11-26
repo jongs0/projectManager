@@ -9,7 +9,6 @@ export default function MainLayout() {
 
   const [isOpened, setOpened] = useState(false);
 
-  console.log(currentUser.id)
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <nav style={{ background: "rgba(12, 11, 17, 1)", height: "80px", padding: "10px 20px", display: "flex" }}>

@@ -36,30 +36,29 @@ const NewTaskBox = ({ projectId, refreshTasks }: NewTaskBoxProps) => {
         }
     });
 
-    if (!isOpen) {
-        return (
-            <div
-                onClick={() => setIsOpen(true)}
-                style={{
-                    width: "268px",
-                    height: "100px",
-                    margin: "16px",
-                    border: "2px dashed white",
-                    borderRadius: "10px",
-                    background: "rgba(0,0,0,0.4)",
-                    color: "white",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    cursor: "pointer"
-                }}
-                onMouseOver={(e) => { e.currentTarget.style.background = "rgba(19, 19, 19, 1)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(0, 0, 0, 1)"; }}
-            >
-                + Add Task
-            </div>
-        );
-    }
+    if (!isOpen) return (
+        <div
+            onClick={() => setIsOpen(true)}
+            style={{
+                width: "268px",
+                height: "100px",
+                margin: "16px",
+                border: "2px dashed white",
+                borderRadius: "10px",
+                background: "rgba(0,0,0,0.4)",
+                color: "white",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                cursor: "pointer"
+            }}
+            onMouseOver={(e) => { e.currentTarget.style.background = "rgba(19, 19, 19, 1)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(0, 0, 0, 1)"; }}
+        >
+            + Add Task
+        </div>
+    );
+
     return (
         <form
             onSubmit={(e) => {

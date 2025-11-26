@@ -6,9 +6,12 @@ import type { ProjectDTO } from "../types/models.js";
 import TaskComponent from "../components/TaskComponent.tsx";
 import TeamComponent from "../components/TeamComponent.tsx";
 import { useParams } from "react-router";
+import NewTeamButton from "../components/NewTeamButton.tsx";
 
 const Project = () => {
     const { projectId } = useParams<{ projectId: string }>();
+    const numericProjectId = Number(projectId);
+
     const userLogin = currentUser();
 
     const {
@@ -17,10 +20,10 @@ const Project = () => {
         error,
         refetch
     } = useQuery<ProjectDTO>({
-        queryKey: ["projects", projectId],
+        queryKey: ["projects", numericProjectId],
         queryFn: async () => {
             const response = await fetch(
-                `${API_URL}/myProjects/id/${projectId}?userId=${userLogin.id}`
+                `${API_URL}/myProjects/id/${numericProjectId}?userId=${userLogin.id}`
             );
             if (!response.ok) {
                 throw new Error("Failed to fetch project");
@@ -34,23 +37,13 @@ const Project = () => {
 
     return (
         <div style={{ flex: 1, display: "flex" }}>
-            
-            {/* TEAMS COLUMN */}
-            <div style={{ margin: "16px" }}>
-                <strong
-                    style={{
-                        display: "block",
-                        fontSize: "30px",
-                        textAlign: "center"
-                    }}
-                >
-                    Teams
-                </strong>
+            <strong style={{position:"absolute", top: "10px", left: "calc(50vw - 100px)", fontSize: "35px"}}>{project?.name}</strong>
 
+            <div style={{ margin: "16px" }}>
                 <div
                     style={{
                         flex: 1,
-                        height: "calc(100vh - 160px)",
+                        height: "calc(100vh - 120px)",
                         width: "300px",
                         background: "black",
                         border: "2px solid white",
@@ -60,6 +53,17 @@ const Project = () => {
                         overflowX: "hidden"
                     }}
                 >
+                    <strong
+                        style={{
+                            display: "block",
+                            fontSize: "30px",
+                            textAlign: "center"
+                        }}
+                    >
+                        Teams
+                    </strong>
+
+
                     {project && project.teams.length > 0 ? (
                         project.teams.map((team) => (
                             <TeamComponent
@@ -73,15 +77,16 @@ const Project = () => {
                             No teams assigned
                         </p>
                     )}
+
+                    <NewTeamButton projectId={project?.id} />
                 </div>
             </div>
 
-            {/* BACKLOG COLUMN */}
             <div style={{ margin: "16px" }}>
                 <strong
                     style={{
                         display: "block",
-                        fontSize: "25px",
+                        fontSize: "30px",
                         textAlign: "center"
                     }}
                 >
@@ -91,7 +96,7 @@ const Project = () => {
                 <div
                     style={{
                         flex: 1,
-                        height: "calc(100vh - 160px)",
+                        height: "calc(100vh - 165px)",
                         width: "300px",
                         background: "black",
                         border: "2px solid white",
@@ -114,22 +119,22 @@ const Project = () => {
                                     isWatching={task.watchers.some(
                                         (w) => w.id === userLogin.id
                                     )}
+                                    userRole={userLogin.role}
                                 />
                             ))}
 
-                    <NewTaskBox
+                    {userLogin.role != "CLIENT" && <NewTaskBox
                         projectId={project!.id}
                         refreshTasks={() => refetch()}
-                    />
+                    />}
                 </div>
             </div>
 
-            {/* DONE COLUMN */}
             <div style={{ margin: "16px" }}>
                 <strong
                     style={{
                         display: "block",
-                        fontSize: "25px",
+                        fontSize: "30px",
                         textAlign: "center"
                     }}
                 >
@@ -139,7 +144,7 @@ const Project = () => {
                 <div
                     style={{
                         flex: 1,
-                        height: "calc(100vh - 160px)",
+                        height: "calc(100vh - 165px)",
                         width: "300px",
                         background: "black",
                         border: "2px solid white",
@@ -162,6 +167,7 @@ const Project = () => {
                                     isWatching={task.watchers.some(
                                         (w) => w.id === userLogin.id
                                     )}
+                                    userRole={userLogin.role}
                                 />
                             ))}
                 </div>

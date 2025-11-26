@@ -124,6 +124,7 @@ export interface TeamDTO {
 export interface TeamSummaryDTO {
     id: number;
     name: string;
+    projectId: number;
 }
 
 export interface TeamUpdateDTO {

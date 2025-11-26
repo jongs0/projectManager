@@ -23,7 +23,7 @@ const AddUserButton = ({team}) => {
                 onClick={() => { openMenu(true) }}>
                 Add user..
             </Button>
-            {isOpened && <AddUserPopup closeFunction={() => openMenu(false)} team={team} />}
+            {isOpened && team && <AddUserPopup closeFunction={() => openMenu(false)} team={team} />}
         </>
     )
 

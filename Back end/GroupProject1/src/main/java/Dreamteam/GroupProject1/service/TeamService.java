@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static Dreamteam.GroupProject1.models.enums.Role.PROJECTMANAGER;
+
 
 @Service
 public class TeamService {
@@ -64,11 +66,24 @@ public class TeamService {
         AppUser appUser = appUserRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + userId));
 
+        if (team.getTeamMembers().contains(appUser)) {
+            throw new IllegalStateException("User already in this team");
+        }
+        if (!appUser.hasRole(PROJECTMANAGER)) {
+            for (Team t : appUser.getTeams()) {
+                if (t.getProject() != null && t.getProject().getId().equals(team.getProject().getId())) {
+                    throw new IllegalStateException("User already belongs to a team in this project");
+                }
+            }
+        }
+
         team.addTeamMember(appUser);
         appUser.addTeam(team);
         appUserRepository.save(appUser);
-        teamRepository.save(team);
-        return TeamDTO.fromEntity(team);
+        Team updated = teamRepository.save(team);
+        return teamRepository.findById(teamId)
+                .map(TeamDTO::fromEntity)
+                .orElseThrow();
     }
 
     public TeamDTO removeMember(Long teamId, Long userId) {
@@ -79,7 +94,10 @@ public class TeamService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + userId));
 
         team.removeTeamMember(appUser);
+        appUser.getTeams().remove(team);
+
         Team savedTeam = teamRepository.save(team);
+        appUserRepository.save(appUser);
         return TeamDTO.fromEntity(savedTeam);
     }
 

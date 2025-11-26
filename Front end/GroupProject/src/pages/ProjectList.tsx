@@ -103,7 +103,7 @@ const ProjectList = () => {
                                 justifyContent: "center"
                             }}
                         >
-                            <p style={{alignContent: "center"}}>{project.description}</p>
+                            <p style={{alignContent: "center", color: "white"}}>{project.description}</p>
                         </div>
                         {siteUser.role == "PROJECTMANAGER" && (
                             <div style={{

@@ -6,18 +6,18 @@ import { API_URL } from "../../api/config.ts";
 import { currentUser } from "../../stores/userStore.ts";
 
 const CommentComponent = ({ commentAuthor, body, commentId, authorId }) => {
-
+    
     const user = currentUser();
     const isAuthor = user.id === authorId;
     const [showingButtons, showButtons] = useState(false);
     const [isEditing, setEditing] = useState(false);
     const [comment, setComment] = useState({
-    body: body,
-    commentId: commentId
-});
-
-
-        const handleEditcomment = useMutation({
+        body: body,
+        commentId: commentId
+    });
+    
+    
+    const handleEditcomment = useMutation({
         mutationFn: async (dto: CommentUpdateDTO) => {
             const res = await fetch(`${API_URL}/comments/${commentId}/edit?userId=${user.id}`, {
                 method: "PUT",
@@ -35,14 +35,15 @@ const CommentComponent = ({ commentAuthor, body, commentId, authorId }) => {
             console.log("Edit failed: unable to edit comment");
         },
     });
-
+    
     const editComment = () => {
-        if (!isEditing) { setEditing(true);
+        if (!isEditing) {
+            setEditing(true);
         } else {
-        handleEditcomment.mutate({ body: comment.body });
+            handleEditcomment.mutate({ body: comment.body });
         }
     }
-
+    
     return (
         <div style={{
             width: "90%",
@@ -55,55 +56,68 @@ const CommentComponent = ({ commentAuthor, body, commentId, authorId }) => {
             position: "relative",
             padding: "12px",
             boxSizing: "border-box"
-
+            
         }}
-            onMouseOver={(e) => {
-                 e.currentTarget.style.background = "rgba(19, 19, 19, 1)";
-                if (isAuthor) showButtons(true); 
+        onMouseOver={(e) => {
+            e.currentTarget.style.background = "rgba(19, 19, 19, 1)";
+            if (isAuthor) showButtons(true);
+        }}
+        onMouseLeave={(e) => {
+            e.currentTarget.style.background = "rgba(0, 0, 0, 1)";
+            showButtons(false);
+        }}
+        >
+        {(!isEditing || !isAuthor) ? (
+            <p style={{ display: "block", fontSize: "20px" }}>
+            {comment.body}
+            </p>
+        ) : (
+            <textarea
+            value={comment.body}
+            onChange={(e) => setComment({ ...comment, body: e.target.value })}
+            placeholder="Edit comment"
+            style={{
+                width: "100%",
+                height: "100%",
+                background: "black",
+                color: "white",
+                border: "none",
+                outline: "none",
+                resize: "none",
+                fontSize: "20px",
+                padding: 0,
+                margin: 0,
             }}
-            onMouseLeave={(e) => {
-                 e.currentTarget.style.background = "rgba(0, 0, 0, 1)";
-                showButtons(false);
+            
+            />
+        )}
+        
+        
+        {showingButtons && isAuthor && (
+            <Button style={{
+                position: "absolute",
+                top: "6px",
+                right: "6px",
+                height: "12px",
+                lineHeight: "12px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                
             }}
-        > 
-                {(!isEditing || !isAuthor) ? (
-                <p style={{ display: "block", fontSize: "20px" }}>
-                    {comment.body}
-                </p>
-            ) : (
-                <textarea
-                    style={{ display: "block", fontSize: "20px" }}
-                    value={comment.body}
-                    onChange={(e) => setComment({ ...comment, body: e.target.value })}
-                    placeholder="Edit comment"
-                />
-            )}
-
-
-            {showingButtons && isAuthor && (
-                <Button style={{
-                    position: "absolute",
-                    top: "6px",
-                    right: "6px",
-                    height: "12px",
-                    lineHeight: "12px",
-                    display: "flex", 
-                    justifyContent: "center", 
-                    alignItems: "center",
-                    
-                }}
-                    onClick={() => editComment()}
-                >
-                    {isEditing ? "save" : "edit"}</Button>
-            )}
-
-            <p style={{
-                display: "block", fontSize: "20px", textAlign: "right", marginRight: "8px",
-                bottom: "6px"
-            }}>{commentAuthor}</p>
+            onClick={() => editComment()}
+            >
+            {isEditing ? "save" : "edit"}</Button>
+        )}
+        
+        {!isEditing && <p style={{
+            display: "block", fontSize: "20px", textAlign: "right", right:"6px",
+            bottom: "6px", position: "absolute", marginBottom: "0px"
+        }}>{commentAuthor}</p>}
+        
         </div>
     )
-
+    
 }
 
 export default CommentComponent

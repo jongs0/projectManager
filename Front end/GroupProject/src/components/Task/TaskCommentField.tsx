@@ -51,7 +51,7 @@ const TaskCommentField = ({ taskId }: TaskCommentFieldProps) => {
 
     };
 
-    return (
+    if (user.role !== "CLIENT") return (
         <form onSubmit={postComment} style={{
             width: "100%",
             display: "flex",
@@ -76,6 +76,7 @@ const TaskCommentField = ({ taskId }: TaskCommentFieldProps) => {
                     resize: "none"
                 }}
             />
+
             <Button type="submit" style={{
                 width: "200px",
                 height: "40px",

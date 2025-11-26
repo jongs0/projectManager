@@ -23,6 +23,7 @@ const UserComponent = ({ userId, teamId }) => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["user", userId]})
+            queryClient.invalidateQueries({ queryKey: ["teams", teamId]})
         }
     });
 
@@ -74,20 +75,23 @@ const UserComponent = ({ userId, teamId }) => {
             background: "black",
             border: "2px solid white",
             borderRadius: "10px",
-            margin: "16px",
+            marginLeft: "16px",
+            marginTop: "8px",
             cursor: "pointer",
             display: "flex",
             flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
         }}
             onMouseOver={(e) => { e.currentTarget.style.background = "rgba(19, 19, 19, 1)" }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(0, 0, 0, 1)"; openMenu(false) }}
-            onClick={() => { openMenu(true) }}
+            onClick={() => { if (user?.id != siteUser.id && siteUser.role == "PROJECTMANAGER") openMenu(true) }}
         >
-            <strong style={{ display: "block", fontSize: "30px", textAlign: "center" }}>{user?.email}</strong>
+            <strong style={{ display: "block", fontSize: "22px", textAlign: "center" }}>{user?.email}</strong>
             {isOpened && <div style={{
                 position: "absolute",
                 width: "268px",
-                height: "250px",
+                height: "300px",
                 background: "black",
                 border: "2px solid white",
                 borderRadius: "10px",
@@ -99,38 +103,41 @@ const UserComponent = ({ userId, teamId }) => {
                 <strong style={{ display: "block", fontSize: "25px", textAlign: "center" }}>Edit</strong>
                 <p style={{ display: "block", fontSize: "20px", textAlign: "center", marginBottom: "0px" }}>Set to..</p>
 
-                {(user?.role != "PROJECTMANAGER") && <Button style={{
+                <Button style={{
                     width: "200px",
                     height: "40px",
                     lineHeight: "12px",
                     padding: "0px",
                     margin: "4px"
                 }}
+                disabled = {user?.role == "PROJECTMANAGER"}
                     onClick={() => { changeRole.mutate("PROJECTMANAGER") }}>
                     Proj. manager
-                </Button>}
+                </Button>
 
-                {(user?.role != "DEVELOPER") && <Button style={{
+                <Button style={{
                     width: "200px",
                     height: "40px",
                     lineHeight: "12px",
                     padding: "0px",
                     margin: "4px"
                 }}
+                disabled = {user?.role == "DEVELOPER"}
                     onClick={() => { changeRole.mutate("DEVELOPER") }}>
                     Developer
-                </Button>}
+                </Button>
 
-                {(user?.role != "CLIENT") && <Button style={{
+                <Button style={{
                     width: "200px",
                     height: "40px",
                     lineHeight: "12px",
                     padding: "0px",
                     margin: "4px"
                 }}
+                disabled = {user?.role == "CLIENT"}
                     onClick={() => { changeRole.mutate("CLIENT") }}>
-                    Viewer
-                </Button>}
+                    Client
+                </Button>
 
                 {user && (
                 <Button style={{
