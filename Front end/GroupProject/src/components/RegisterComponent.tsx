@@ -22,7 +22,7 @@ const RegisterComponent = ({ onBack }: { onBack: () => void }) => {
         register.verifiedPassword.length > 0 &&
         register.tempPassword === register.verifiedPassword;
 
-    const passwordLengthCheck = register.tempPassword.length > 8
+    const passwordLengthCheck = register.tempPassword.length >= 8
 
     const isEmail = 
     register.email.includes("@");
