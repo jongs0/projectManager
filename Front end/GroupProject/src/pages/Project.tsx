@@ -37,7 +37,7 @@ const Project = () => {
 
     return (
         <div style={{ flex: 1, display: "flex" }}>
-            
+
             <div style={{ margin: "16px" }}>
                 <div
                     style={{
@@ -53,14 +53,14 @@ const Project = () => {
                     }}
                 >
                     <strong
-                    style={{
-                        display: "block",
-                        fontSize: "30px",
-                        textAlign: "center"
-                    }}
-                >
-                    Teams {numericProjectId}
-                </strong>
+                        style={{
+                            display: "block",
+                            fontSize: "30px",
+                            textAlign: "center"
+                        }}
+                    >
+                        Teams {numericProjectId}
+                    </strong>
 
 
                     {project && project.teams.length > 0 ? (
@@ -77,7 +77,7 @@ const Project = () => {
                         </p>
                     )}
 
-                    <NewTeamButton projectId={project?.id}/>
+                    <NewTeamButton projectId={project?.id} />
                 </div>
             </div>
 
@@ -122,10 +122,10 @@ const Project = () => {
                                 />
                             ))}
 
-                    <NewTaskBox
+                    {userLogin.role != "CLIENT" && <NewTaskBox
                         projectId={project!.id}
                         refreshTasks={() => refetch()}
-                    />
+                    />}
                 </div>
             </div>
 

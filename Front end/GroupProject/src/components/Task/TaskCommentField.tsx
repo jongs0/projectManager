@@ -51,7 +51,7 @@ const TaskCommentField = ({ taskId }: TaskCommentFieldProps) => {
 
     };
 
-    return (
+    if (user.role !== "CLIENT") return (
         <form onSubmit={postComment} style={{
             width: "100%",
             display: "flex",
@@ -77,7 +77,6 @@ const TaskCommentField = ({ taskId }: TaskCommentFieldProps) => {
                 }}
             />
 
-            {user.role !== "CLIENT" && (
             <Button type="submit" style={{
                 width: "200px",
                 height: "40px",
@@ -87,7 +86,6 @@ const TaskCommentField = ({ taskId }: TaskCommentFieldProps) => {
                 disabled={commentText.trim() === ""}>
                 submit
             </Button>
-            )}
         </form>
     )
 
