@@ -37,6 +37,7 @@ const Project = () => {
 
     return (
         <div style={{ flex: 1, display: "flex" }}>
+            <strong style={{position:"absolute", top: "10px", left: "calc(50vw - 100px)", fontSize: "35px"}}>{project?.name}</strong>
 
             <div style={{ margin: "16px" }}>
                 <div
@@ -59,7 +60,7 @@ const Project = () => {
                             textAlign: "center"
                         }}
                     >
-                        Teams {numericProjectId}
+                        Teams
                     </strong>
 
 

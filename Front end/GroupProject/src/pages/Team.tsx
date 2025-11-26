@@ -49,6 +49,7 @@ const Team = () => {
 
     return (
         <div style={{ flex: 1, display: "flex", }}>
+            <strong style={{position:"absolute", top: "10px", left: "calc(50vw - 100px)", fontSize: "35px"}}>{team?.name}</strong>
             <div style={{
                 width: "300px",
                 background: "black",
